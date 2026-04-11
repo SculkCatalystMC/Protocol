@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/level/SubChunkPos.hpp"
+#include "sculk/protocol/level/chunk/SubChunkPos.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 #include <array>
 

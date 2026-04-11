@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/network/DebugShape.hpp"
+#include "sculk/protocol/level/DebugShape.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {

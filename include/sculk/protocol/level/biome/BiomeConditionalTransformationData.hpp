@@ -7,8 +7,8 @@
 
 #pragma once
 #include "BiomeWeightedData.hpp"
-#include "sculk/protocol/utility/BinaryStream.hpp"
-#include "sculk/protocol/utility/ReadOnlyBinaryStream.hpp"
+#include "sculk/protocol/utility/deps/BinaryStream.hpp"
+#include "sculk/protocol/utility/deps/ReadOnlyBinaryStream.hpp"
 #include <cstdint>
 #include <vector>
 

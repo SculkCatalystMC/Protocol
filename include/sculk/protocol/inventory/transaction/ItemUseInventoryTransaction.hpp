@@ -8,7 +8,7 @@
 #pragma once
 #include "sculk/protocol/inventory/item/NetworkItemStackDescriptor.hpp"
 #include "sculk/protocol/level/block/BlockPos.hpp"
-#include "sculk/protocol/math/Vec3.hpp"
+#include "sculk/protocol/utility/math/Vec3.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

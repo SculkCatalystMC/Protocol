@@ -8,8 +8,8 @@
 #pragma once
 #include "sculk/protocol/nbt/TagType.hpp"
 #include "sculk/protocol/nbt/TagVariant.hpp"
-#include "sculk/protocol/utility/BinaryStream.hpp"
-#include "sculk/protocol/utility/ReadOnlyBinaryStream.hpp"
+#include "sculk/protocol/utility/deps/BinaryStream.hpp"
+#include "sculk/protocol/utility/deps/ReadOnlyBinaryStream.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

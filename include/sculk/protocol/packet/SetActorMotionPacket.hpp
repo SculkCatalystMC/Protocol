@@ -6,8 +6,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/math/Vec3.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
+#include "sculk/protocol/utility/math/Vec3.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

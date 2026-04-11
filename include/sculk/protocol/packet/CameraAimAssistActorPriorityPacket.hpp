@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/network/AimAssistActorPriorityData.hpp"
+#include "sculk/protocol/actor/AimAssistActorPriorityData.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {

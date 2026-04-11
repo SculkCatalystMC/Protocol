@@ -9,8 +9,8 @@
 #include "BiomeConditionalTransformationData.hpp"
 #include "BiomeWeightedData.hpp"
 #include "BiomeWeightedTemperatureData.hpp"
-#include "sculk/protocol/utility/BinaryStream.hpp"
-#include "sculk/protocol/utility/ReadOnlyBinaryStream.hpp"
+#include "sculk/protocol/utility/deps/BinaryStream.hpp"
+#include "sculk/protocol/utility/deps/ReadOnlyBinaryStream.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

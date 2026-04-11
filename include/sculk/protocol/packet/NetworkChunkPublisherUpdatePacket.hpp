@@ -6,8 +6,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/level/ChunkPos.hpp"
 #include "sculk/protocol/level/block/BlockPos.hpp"
+#include "sculk/protocol/level/chunk/ChunkPos.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {

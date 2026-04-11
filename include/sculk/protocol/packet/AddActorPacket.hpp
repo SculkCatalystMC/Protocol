@@ -11,9 +11,9 @@
 #include "sculk/protocol/actor/MetaData.hpp"
 #include "sculk/protocol/actor/PropertySyncData.hpp"
 #include "sculk/protocol/actor/SyncedAttribute.hpp"
-#include "sculk/protocol/math/Vec2.hpp"
-#include "sculk/protocol/math/Vec3.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
+#include "sculk/protocol/utility/math/Vec2.hpp"
+#include "sculk/protocol/utility/math/Vec3.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

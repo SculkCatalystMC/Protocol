@@ -9,13 +9,13 @@
 #include "sculk/protocol/actor/player/SyncedPlayerMovementSettings.hpp"
 #include "sculk/protocol/actor/player/UUID.hpp"
 #include "sculk/protocol/level/LevelSettings.hpp"
+#include "sculk/protocol/level/ServerConfiguration.hpp"
+#include "sculk/protocol/level/ServerTelemetryData.hpp"
 #include "sculk/protocol/level/block/BlockProperty.hpp"
-#include "sculk/protocol/math/Vec2.hpp"
-#include "sculk/protocol/math/Vec3.hpp"
 #include "sculk/protocol/nbt/TagVariant.hpp"
-#include "sculk/protocol/network/ServerConfiguration.hpp"
-#include "sculk/protocol/network/ServerTelemetryData.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
+#include "sculk/protocol/utility/math/Vec2.hpp"
+#include "sculk/protocol/utility/math/Vec3.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

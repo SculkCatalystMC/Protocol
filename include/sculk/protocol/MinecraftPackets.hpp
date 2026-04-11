@@ -8,8 +8,8 @@
 #pragma once
 #include "MinecraftPacketIds.hpp"
 #include "packet/IPacket.hpp"
-#include "utility/BinaryStream.hpp"
-#include "utility/ReadOnlyBinaryStream.hpp"
+#include "utility/deps/BinaryStream.hpp"
+#include "utility/deps/ReadOnlyBinaryStream.hpp"
 #include <memory>
 
 namespace sculk::protocol::inline abi_v944 {

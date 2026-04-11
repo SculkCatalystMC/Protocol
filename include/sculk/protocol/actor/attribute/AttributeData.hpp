@@ -9,8 +9,8 @@
 #include "sculk/protocol/actor/attribute/BoolAttributeData.hpp"
 #include "sculk/protocol/actor/attribute/ColorAttributeData.hpp"
 #include "sculk/protocol/actor/attribute/FloatAttributeData.hpp"
-#include "sculk/protocol/utility/BinaryStream.hpp"
-#include "sculk/protocol/utility/ReadOnlyBinaryStream.hpp"
+#include "sculk/protocol/utility/deps/BinaryStream.hpp"
+#include "sculk/protocol/utility/deps/ReadOnlyBinaryStream.hpp"
 #include <variant>
 
 namespace sculk::protocol::inline abi_v944 {

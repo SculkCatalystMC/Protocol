@@ -12,9 +12,9 @@
 #include "sculk/protocol/actor/player/SerializedAbilitiesData.hpp"
 #include "sculk/protocol/actor/player/UUID.hpp"
 #include "sculk/protocol/inventory/item/NetworkItemStackDescriptor.hpp"
-#include "sculk/protocol/math/Vec2.hpp"
-#include "sculk/protocol/math/Vec3.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
+#include "sculk/protocol/utility/math/Vec2.hpp"
+#include "sculk/protocol/utility/math/Vec3.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 

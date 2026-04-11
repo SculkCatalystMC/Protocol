@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #include "sculk/protocol/packet/CommandRequestPacket.hpp"
-#include "../utils/EnumName.hpp"
+#include "../utility/EnumName.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
