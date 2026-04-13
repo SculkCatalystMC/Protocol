@@ -12,10 +12,21 @@ namespace sculk::protocol::inline abi_v944 {
 
 class CameraShakePacket : public IPacket {
 public:
-    float        mIntensity{};
-    float        mSeconds{};
-    std::uint8_t mType{};
-    std::uint8_t mAction{};
+    enum class Type : std::uint8_t {
+        Positional = 0,
+        Rotational = 1,
+    };
+
+    enum class Action : std::uint8_t {
+        Add  = 0,
+        Stop = 1,
+    };
+
+public:
+    float  mIntensity{};
+    float  mSeconds{};
+    Type   mType{};
+    Action mAction{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

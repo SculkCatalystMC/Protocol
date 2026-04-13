@@ -12,7 +12,16 @@ namespace sculk::protocol::inline abi_v944 {
 
 class UnlockedRecipesPacket : public IPacket {
 public:
-    std::uint32_t            mPacketType{};
+    enum class PacketType : std::uint32_t {
+        Empty                    = 0,
+        InitiallyUnlockedRecipes = 1,
+        NewlyUnlockedRecipes     = 2,
+        RemoveUnlockedRecipes    = 3,
+        RemoveAllUnlockedRecipes = 4,
+    };
+
+public:
+    PacketType               mPacketType{};
     std::vector<std::string> mUnlockedRecipesList{};
 
 public:

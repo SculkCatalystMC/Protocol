@@ -15,7 +15,7 @@ std::string_view NpcDialoguePacket::getName() const noexcept { return "NpcDialog
 
 void NpcDialoguePacket::write(BinaryStream& stream) const {
     stream.writeUnsignedInt64(mNpcId);
-    stream.writeVarInt(mActionType);
+    stream.writeEnum(mActionType, &BinaryStream::writeVarInt);
     stream.writeString(mDialogue);
     stream.writeString(mSceneName);
     stream.writeString(mNpcName);
@@ -24,7 +24,7 @@ void NpcDialoguePacket::write(BinaryStream& stream) const {
 
 Result<> NpcDialoguePacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedInt64(mNpcId); !status) return status;
-    if (auto status = stream.readVarInt(mActionType); !status) return status;
+    if (auto status = stream.readEnum(mActionType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readString(mDialogue); !status) return status;
     if (auto status = stream.readString(mSceneName); !status) return status;
     if (auto status = stream.readString(mNpcName); !status) return status;

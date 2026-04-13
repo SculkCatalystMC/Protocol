@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/actor/player/GameType.hpp"
 #include "sculk/protocol/actor/player/SyncedPlayerMovementSettings.hpp"
 #include "sculk/protocol/actor/player/UUID.hpp"
 #include "sculk/protocol/level/LevelSettings.hpp"
@@ -23,7 +24,7 @@ class StartGamePacket : public IPacket {
 public:
     std::int64_t                               mActorUniqueId{};
     std::uint64_t                              mActorRuntimeId{};
-    int                                        mGameType{};
+    GameType                                   mGameType{};
     Vec3                                       mPosition{};
     Vec2                                       mRotation{};
     LevelSettings                              mLevelSettings{};

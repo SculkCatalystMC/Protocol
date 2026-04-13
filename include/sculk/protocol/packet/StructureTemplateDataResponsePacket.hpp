@@ -13,10 +13,17 @@ namespace sculk::protocol::inline abi_v944 {
 
 class StructureTemplateDataResponsePacket : public IPacket {
 public:
-    std::string  mStructureName{};
-    bool         mSuccess{false};
-    CompoundTag  mNbt{};
-    std::uint8_t mResponseType{};
+    enum class StructureTemplateResponseType : std::uint8_t {
+        None   = 0,
+        Export = 1,
+        Query  = 2,
+    };
+
+public:
+    std::string                   mStructureName{};
+    bool                          mSuccess{false};
+    CompoundTag                   mNbt{};
+    StructureTemplateResponseType mResponseType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

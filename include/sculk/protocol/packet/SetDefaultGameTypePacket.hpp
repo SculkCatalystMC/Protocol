@@ -6,13 +6,14 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/actor/player/GameType.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 class SetDefaultGameTypePacket : public IPacket {
 public:
-    std::int32_t mDefaultGameType{};
+    GameType mDefaultGameType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

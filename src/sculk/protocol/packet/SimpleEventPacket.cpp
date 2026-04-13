@@ -13,8 +13,12 @@ MinecraftPacketIds SimpleEventPacket::getId() const noexcept { return MinecraftP
 
 std::string_view SimpleEventPacket::getName() const noexcept { return "SimpleEventPacket"; }
 
-void SimpleEventPacket::write(BinaryStream& stream) const { stream.writeUnsignedShort(mType); }
+void SimpleEventPacket::write(BinaryStream& stream) const {
+    stream.writeEnum(mType, &BinaryStream::writeUnsignedShort);
+}
 
-Result<> SimpleEventPacket::read(ReadOnlyBinaryStream& stream) { return stream.readUnsignedShort(mType); }
+Result<> SimpleEventPacket::read(ReadOnlyBinaryStream& stream) {
+    return stream.readEnum(mType, &ReadOnlyBinaryStream::readUnsignedShort);
+}
 
 } // namespace sculk::protocol::inline abi_v944

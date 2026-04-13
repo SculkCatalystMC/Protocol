@@ -13,7 +13,14 @@
 
 namespace sculk::protocol::inline abi_v944 {
 
-struct CameraPreset {
+class CameraPreset {
+public:
+    enum class AudioListener : std::uint8_t {
+        Camera = 0,
+        Player = 1,
+    };
+
+public:
     std::string                                    mName{};
     std::string                                    mInhertFrom{};
     std::optional<float>                           mPosX{};
@@ -32,13 +39,14 @@ struct CameraPreset {
     std::optional<float>                           mRadius{};
     std::optional<float>                           mYawLimitMin{};
     std::optional<float>                           mYawLimitMax{};
-    std::optional<std::uint8_t>                    mListener{};
+    std::optional<AudioListener>                   mListener{};
     std::optional<bool>                            mPlayerEffects{};
     std::optional<bool>                            mAlignTargetAndCameraForward{};
     std::optional<CameraPresetAimAssistDefinition> mAimAssist{};
     std::optional<ControlScheme>                   mControlScheme{};
 
-    void                   write(BinaryStream& stream) const;
+    void write(BinaryStream& stream) const;
+
     [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
 };
 

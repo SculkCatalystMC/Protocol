@@ -12,8 +12,14 @@ namespace sculk::protocol::inline abi_v944 {
 
 class NpcDialoguePacket : public IPacket {
 public:
+    enum class ActionType : std::int32_t {
+        Open  = 0,
+        Close = 1,
+    };
+
+public:
     std::uint64_t mNpcId{};
-    std::int32_t  mActionType{};
+    ActionType    mActionType{};
     std::string   mDialogue{};
     std::string   mSceneName{};
     std::string   mNpcName{};

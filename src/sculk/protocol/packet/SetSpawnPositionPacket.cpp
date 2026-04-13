@@ -14,14 +14,14 @@ MinecraftPacketIds SetSpawnPositionPacket::getId() const noexcept { return Minec
 std::string_view SetSpawnPositionPacket::getName() const noexcept { return "SetSpawnPositionPacket"; }
 
 void SetSpawnPositionPacket::write(BinaryStream& stream) const {
-    stream.writeVarInt(mSpawnPositionType);
+    stream.writeEnum(mSpawnPositionType, &BinaryStream::writeVarInt);
     mBlockPosition.write(stream);
     stream.writeVarInt(mDimensionType);
     mSpawnBlockPos.write(stream);
 }
 
 Result<> SetSpawnPositionPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readVarInt(mSpawnPositionType); !status) return status;
+    if (auto status = stream.readEnum(mSpawnPositionType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = mBlockPosition.read(stream); !status) return status;
     if (auto status = stream.readVarInt(mDimensionType); !status) return status;
     return mSpawnBlockPos.read(stream);

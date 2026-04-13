@@ -17,9 +17,9 @@ void StructureSettings::write(BinaryStream& stream) const {
     mSize.write(stream);
     mOffset.write(stream);
     stream.writeVarInt64(mLastEditPlayer);
-    stream.writeByte(mRotation);
-    stream.writeByte(mMirror);
-    stream.writeByte(mAnimationMode);
+    stream.writeEnum(mRotation, &BinaryStream::writeByte);
+    stream.writeEnum(mMirror, &BinaryStream::writeByte);
+    stream.writeEnum(mAnimationMode, &BinaryStream::writeByte);
     stream.writeFloat(mAnimationSeconds);
     stream.writeFloat(mIntegretyValue);
     stream.writeUnsignedInt(mSeed);
@@ -34,9 +34,9 @@ Result<> StructureSettings::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mSize.read(stream); !status) return status;
     if (auto status = mOffset.read(stream); !status) return status;
     if (auto status = stream.readVarInt64(mLastEditPlayer); !status) return status;
-    if (auto status = stream.readByte(mRotation); !status) return status;
-    if (auto status = stream.readByte(mMirror); !status) return status;
-    if (auto status = stream.readByte(mAnimationMode); !status) return status;
+    if (auto status = stream.readEnum(mRotation, &ReadOnlyBinaryStream::readByte); !status) return status;
+    if (auto status = stream.readEnum(mMirror, &ReadOnlyBinaryStream::readByte); !status) return status;
+    if (auto status = stream.readEnum(mAnimationMode, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readFloat(mAnimationSeconds); !status) return status;
     if (auto status = stream.readFloat(mIntegretyValue); !status) return status;
     if (auto status = stream.readUnsignedInt(mSeed); !status) return status;

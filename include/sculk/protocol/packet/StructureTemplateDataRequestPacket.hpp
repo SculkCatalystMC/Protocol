@@ -14,10 +14,18 @@ namespace sculk::protocol::inline abi_v944 {
 
 class StructureTemplateDataRequestPacket : public IPacket {
 public:
-    std::string       mStructureName{};
-    BlockPos          mPosition{};
-    StructureSettings mSettings{};
-    std::uint8_t      mOperationType{};
+    enum class StructureTemplateRequestOperation : std::uint8_t {
+        None                = 0,
+        ExportFromSaveMode  = 1,
+        ExportFromLoadMode  = 2,
+        QuerySavedStructure = 3,
+    };
+
+public:
+    std::string                       mStructureName{};
+    BlockPos                          mPosition{};
+    StructureSettings                 mSettings{};
+    StructureTemplateRequestOperation mOperationType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

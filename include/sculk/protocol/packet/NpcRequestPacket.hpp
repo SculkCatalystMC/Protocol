@@ -12,8 +12,19 @@ namespace sculk::protocol::inline abi_v944 {
 
 class NpcRequestPacket : public IPacket {
 public:
+    enum class RequestType : std::uint8_t {
+        SetActions             = 0,
+        ExecuteAction          = 1,
+        ExecuteClosingCommands = 2,
+        SetName                = 3,
+        SetSkin                = 4,
+        SetInteractText        = 5,
+        ExecuteOpeningCommands = 6,
+    };
+
+public:
     std::uint64_t mActorRuntimeId{};
-    std::uint8_t  mRequestType{};
+    RequestType   mRequestType{};
     std::string   mActions{};
     std::uint8_t  mActionIndex{};
     std::string   mSceneName{};

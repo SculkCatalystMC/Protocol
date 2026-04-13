@@ -12,7 +12,14 @@ namespace sculk::protocol::inline abi_v944 {
 
 class LessonProgressPacket : public IPacket {
 public:
-    std::int32_t mAction{};
+    enum class LessonAction : std::int32_t {
+        Start    = 0,
+        Complete = 1,
+        Restart  = 2,
+    };
+
+public:
+    LessonAction mAction{};
     std::int32_t mScore{};
     std::string  mActivityId{};
 

@@ -6,25 +6,28 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/camera/EasingType.hpp"
 #include "sculk/protocol/utility/math/Vec3.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 struct CameraSplineProgressKeyFrame {
-    float       mProgress{};
-    float       mTime{};
-    std::string mEasing{};
+    float      mProgress{};
+    float      mTime{};
+    EasingType mEasing{};
 
-    void                   write(BinaryStream& stream) const;
+    void write(BinaryStream& stream) const;
+
     [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
 };
 
 struct CameraSplineRotationKeyFrame {
-    Vec3        mRotation{};
-    float       mTime{};
-    std::string mEasing{};
+    Vec3       mRotation{};
+    float      mTime{};
+    EasingType mEasing{};
 
-    void                   write(BinaryStream& stream) const;
+    void write(BinaryStream& stream) const;
+
     [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
 };
 
@@ -36,7 +39,8 @@ struct CameraSplineDefinition {
     std::vector<CameraSplineProgressKeyFrame> mProgressKeyFrames{};
     std::vector<CameraSplineRotationKeyFrame> mRotationKeyFrames{};
 
-    void                   write(BinaryStream& stream) const;
+    void write(BinaryStream& stream) const;
+
     [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
 };
 

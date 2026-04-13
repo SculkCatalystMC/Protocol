@@ -13,9 +13,32 @@ namespace sculk::protocol::inline abi_v944 {
 
 class LabTablePacket : public IPacket {
 public:
-    std::uint8_t mType{};
+    enum class Type : std::uint8_t {
+        StartCombine  = 0,
+        StartReaction = 1,
+        Reset         = 2,
+    };
+
+    enum class ReactionType : std::uint8_t {
+        None               = 0,
+        IceBomb            = 1,
+        Bleach             = 2,
+        ElephantToothpaste = 3,
+        Fertilizer         = 4,
+        HeatBlock          = 5,
+        MagnesiumSalts     = 6,
+        MiscFire           = 7,
+        MiscExplosion      = 8,
+        MiscLava           = 9,
+        MiscMystical       = 10,
+        MiscSmoke          = 11,
+        MiscLargeSmoke     = 12
+    };
+
+public:
+    Type         mType{};
     BlockPos     mPosition{};
-    std::uint8_t mReaction{};
+    ReactionType mReaction{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

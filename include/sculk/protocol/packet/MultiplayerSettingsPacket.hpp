@@ -12,7 +12,14 @@ namespace sculk::protocol::inline abi_v944 {
 
 class MultiplayerSettingsPacket : public IPacket {
 public:
-    std::int32_t mType{};
+    enum class Type : std::int32_t {
+        EnableMultiplayer  = 0,
+        DisableMultiplayer = 1,
+        RefreshJoincode    = 2,
+    };
+
+public:
+    Type mType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

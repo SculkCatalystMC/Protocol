@@ -23,6 +23,7 @@ void DataStoreUpdate::write(BinaryStream& stream) const {
         mData
     );
     stream.writeUnsignedInt(mPropertyUpdateCount);
+    stream.writeUnsignedInt(mPathUpdateCount);
 }
 
 Result<> DataStoreUpdate::read(ReadOnlyBinaryStream& stream) {
@@ -42,12 +43,14 @@ Result<> DataStoreUpdate::read(ReadOnlyBinaryStream& stream) {
         !status) {
         return status;
     }
-    return stream.readUnsignedInt(mPropertyUpdateCount);
+    if (auto status = stream.readUnsignedInt(mPropertyUpdateCount); !status) return status;
+    return stream.readUnsignedInt(mPathUpdateCount);
 }
 
 void DataStoreChange::write(BinaryStream& stream) const {
     stream.writeString(mName);
     stream.writeString(mProperty);
+    stream.writeUnsignedInt(mUpdateCount);
     stream.writeVariantIndex<std::uint32_t>(mData, &BinaryStream::writeUnsignedVarInt);
     std::visit(
         Overload{
@@ -57,26 +60,22 @@ void DataStoreChange::write(BinaryStream& stream) const {
         },
         mData
     );
-    stream.writeUnsignedInt(mUpdateCount);
 }
 
 Result<> DataStoreChange::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mName); !status) return status;
     if (auto status = stream.readString(mProperty); !status) return status;
+    if (auto status = stream.readUnsignedInt(mUpdateCount); !status) return status;
     if (auto status = stream.readVariantIndex<std::uint32_t>(mData, &ReadOnlyBinaryStream::readUnsignedVarInt); !status)
         return status;
-    if (auto status = std::visit(
-            Overload{
-                [&](double& value) { return stream.readDouble(value); },
-                [&](bool& value) { return stream.readBool(value); },
-                [&](std::string& value) { return stream.readString(value); },
-            },
-            mData
-        );
-        !status) {
-        return status;
-    }
-    return stream.readUnsignedInt(mUpdateCount);
+    return std::visit(
+        Overload{
+            [&](double& value) { return stream.readDouble(value); },
+            [&](bool& value) { return stream.readBool(value); },
+            [&](std::string& value) { return stream.readString(value); },
+        },
+        mData
+    );
 }
 
 void DataStoreRemoval::write(BinaryStream& stream) const { stream.writeString(mName); }

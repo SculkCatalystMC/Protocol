@@ -23,7 +23,7 @@ void AddPlayerPacket::write(BinaryStream& stream) const {
     mRot.write(stream);
     stream.writeFloat(mYHeadRot);
     mCarriedItem.write(stream);
-    stream.writeVarInt(mGameType);
+    stream.writeEnum(mGameType, &BinaryStream::writeVarInt);
     mMetaData.write(stream);
     mSynchedProperties.write(stream);
     mAbilities.write(stream);
@@ -42,7 +42,7 @@ Result<> AddPlayerPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mRot.read(stream); !status) return status;
     if (auto status = stream.readFloat(mYHeadRot); !status) return status;
     if (auto status = mCarriedItem.read(stream); !status) return status;
-    if (auto status = stream.readVarInt(mGameType); !status) return status;
+    if (auto status = stream.readEnum(mGameType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = mMetaData.read(stream); !status) return status;
     if (auto status = mSynchedProperties.read(stream); !status) return status;
     if (auto status = mAbilities.read(stream); !status) return status;

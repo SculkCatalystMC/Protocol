@@ -18,7 +18,7 @@ void SetDisplayObjectivePacket::write(BinaryStream& stream) const {
     stream.writeString(mObjectiveName);
     stream.writeString(mObjectiveDisplayName);
     stream.writeString(mCriteriaName);
-    stream.writeVarInt(mSortOrder);
+    stream.writeEnum(mSortOrder, &BinaryStream::writeVarInt);
 }
 
 Result<> SetDisplayObjectivePacket::read(ReadOnlyBinaryStream& stream) {
@@ -26,7 +26,7 @@ Result<> SetDisplayObjectivePacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mObjectiveName); !status) return status;
     if (auto status = stream.readString(mObjectiveDisplayName); !status) return status;
     if (auto status = stream.readString(mCriteriaName); !status) return status;
-    return stream.readVarInt(mSortOrder);
+    return stream.readEnum(mSortOrder, &ReadOnlyBinaryStream::readVarInt);
 }
 
 } // namespace sculk::protocol::inline abi_v944

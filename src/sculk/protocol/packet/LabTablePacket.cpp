@@ -14,15 +14,15 @@ MinecraftPacketIds LabTablePacket::getId() const noexcept { return MinecraftPack
 std::string_view LabTablePacket::getName() const noexcept { return "LabTablePacket"; }
 
 void LabTablePacket::write(BinaryStream& stream) const {
-    stream.writeByte(mType);
+    stream.writeEnum(mType, &BinaryStream::writeByte);
     mPosition.write(stream);
-    stream.writeByte(mReaction);
+    stream.writeEnum(mReaction, &BinaryStream::writeByte);
 }
 
 Result<> LabTablePacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readByte(mType); !status) return status;
+    if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = mPosition.read(stream); !status) return status;
-    return stream.readByte(mReaction);
+    return stream.readEnum(mReaction, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

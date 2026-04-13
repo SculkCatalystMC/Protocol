@@ -12,7 +12,12 @@ namespace sculk::protocol::inline abi_v944 {
 
 class PositionTrackingDBClientRequestPacket : public IPacket {
 public:
-    std::uint8_t mAction{};
+    enum class Action : std::uint8_t {
+        Query = 0,
+    };
+
+public:
+    Action       mAction{};
     std::int32_t mPositionTrackingId{};
 
 public:

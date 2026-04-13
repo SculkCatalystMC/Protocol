@@ -17,13 +17,13 @@ std::string_view ClientCameraAimAssistPacket::getName() const noexcept { return 
 
 void ClientCameraAimAssistPacket::write(BinaryStream& stream) const {
     stream.writeString(mPresetId);
-    stream.writeByte(mAction);
+    stream.writeEnum(mAction, &BinaryStream::writeByte);
     stream.writeBool(mAllowAimAssist);
 }
 
 Result<> ClientCameraAimAssistPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mPresetId); !status) return status;
-    if (auto status = stream.readByte(mAction); !status) return status;
+    if (auto status = stream.readEnum(mAction, &ReadOnlyBinaryStream::readByte); !status) return status;
     return stream.readBool(mAllowAimAssist);
 }
 

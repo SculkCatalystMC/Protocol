@@ -21,14 +21,14 @@ void StructureTemplateDataRequestPacket::write(BinaryStream& stream) const {
     stream.writeString(mStructureName);
     mPosition.write(stream);
     mSettings.write(stream);
-    stream.writeByte(mOperationType);
+    stream.writeEnum(mOperationType, &BinaryStream::writeByte);
 }
 
 Result<> StructureTemplateDataRequestPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mStructureName); !status) return status;
     if (auto status = mPosition.read(stream); !status) return status;
     if (auto status = mSettings.read(stream); !status) return status;
-    return stream.readByte(mOperationType);
+    return stream.readEnum(mOperationType, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

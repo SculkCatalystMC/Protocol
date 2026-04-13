@@ -12,11 +12,17 @@ namespace sculk::protocol::inline abi_v944 {
 
 class SetDisplayObjectivePacket : public IPacket {
 public:
-    std::string  mDisplaySlotName{};
-    std::string  mObjectiveName{};
-    std::string  mObjectiveDisplayName{};
-    std::string  mCriteriaName{};
-    std::int32_t mSortOrder{};
+    enum class ObjectiveSortOrder : std::int32_t {
+        Ascending  = 0,
+        Descending = 1,
+    };
+
+public:
+    std::string        mDisplaySlotName{};
+    std::string        mObjectiveName{};
+    std::string        mObjectiveDisplayName{};
+    std::string        mCriteriaName{};
+    ObjectiveSortOrder mSortOrder{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

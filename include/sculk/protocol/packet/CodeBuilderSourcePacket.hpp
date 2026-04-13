@@ -12,9 +12,32 @@ namespace sculk::protocol::inline abi_v944 {
 
 class CodeBuilderSourcePacket : public IPacket {
 public:
-    std::uint8_t mOperation{};
-    std::uint8_t mCategory{};
-    std::uint8_t mCodeStatus{};
+    enum class Operation : std::uint8_t {
+        None  = 0,
+        Get   = 1,
+        Set   = 2,
+        Reset = 3,
+    };
+
+    enum class Category : std::uint8_t {
+        None          = 0,
+        CodeStatus    = 1,
+        Instantiation = 2,
+    };
+
+    enum class CodeStatus : std::uint8_t {
+        None       = 0,
+        NotStarted = 1,
+        InProgress = 2,
+        Paused     = 3,
+        Error      = 4,
+        Succeeded  = 5,
+    };
+
+public:
+    Operation  mOperation{};
+    Category   mCategory{};
+    CodeStatus mCodeStatus{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/actor/player/PlayerActionType.hpp"
 #include "sculk/protocol/level/block/BlockPos.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
@@ -13,11 +14,11 @@ namespace sculk::protocol::inline abi_v944 {
 
 class PlayerActionPacket : public IPacket {
 public:
-    std::uint64_t mPlayerRuntimeId{};
-    std::int32_t  mAction{};
-    BlockPos      mBlockPosition{};
-    BlockPos      mResultPosition{};
-    std::int32_t  mFace{};
+    std::uint64_t    mPlayerRuntimeId{};
+    PlayerActionType mAction{};
+    BlockPos         mBlockPosition{};
+    BlockPos         mResultPosition{};
+    std::int32_t     mFace{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

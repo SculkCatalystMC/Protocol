@@ -16,13 +16,13 @@ MinecraftPacketIds UpdatePlayerGameTypePacket::getId() const noexcept {
 std::string_view UpdatePlayerGameTypePacket::getName() const noexcept { return "UpdatePlayerGameTypePacket"; }
 
 void UpdatePlayerGameTypePacket::write(BinaryStream& stream) const {
-    stream.writeVarInt(mGameType);
+    stream.writeEnum(mGameType, &BinaryStream::writeVarInt);
     stream.writeVarInt64(mPlayerUniqueId);
     stream.writeUnsignedVarInt64(mTick);
 }
 
 Result<> UpdatePlayerGameTypePacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readVarInt(mGameType); !status) return status;
+    if (auto status = stream.readEnum(mGameType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readVarInt64(mPlayerUniqueId); !status) return status;
     return stream.readUnsignedVarInt64(mTick);
 }

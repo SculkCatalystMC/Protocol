@@ -23,10 +23,7 @@ public:
     Type          mType{};
     std::string   mText{};
     Vec3          mPosition{};
-    float         mColorRed{};
-    float         mColorGreen{};
-    float         mColorBlue{};
-    float         mColorAlpha{};
+    std::int32_t  mColor{};
     std::uint64_t mDurationMilliseconds{};
 
 public:

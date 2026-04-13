@@ -13,7 +13,14 @@ namespace sculk::protocol::inline abi_v944 {
 
 class ServerboundLoadingScreenPacket : public IPacket {
 public:
-    std::int32_t                 mType{};
+    enum class Type : std::int32_t {
+        Unknown            = 0,
+        StartLoadingScreen = 1,
+        EndLoadingScreen   = 2,
+    };
+
+public:
+    Type                         mType{};
     std::optional<std::uint32_t> mLoadingScreenId{};
 
 public:

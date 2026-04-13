@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "EasingType.hpp"
 #include "sculk/protocol/utility/math/Vec2.hpp"
 #include "sculk/protocol/utility/math/Vec3.hpp"
 
@@ -18,7 +19,8 @@ struct CameraInstruction {
             float mHoldTime{};
             float mFadeOutTime{};
 
-            void                   write(BinaryStream& stream) const;
+            void write(BinaryStream& stream) const;
+
             [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
         };
 
@@ -27,23 +29,26 @@ struct CameraInstruction {
             float mGreen{};
             float mBlue{};
 
-            void                   write(BinaryStream& stream) const;
+            void write(BinaryStream& stream) const;
+
             [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
         };
 
         std::optional<TimeOption>  mTime{};
         std::optional<ColorOption> mColor{};
 
-        void                   write(BinaryStream& stream) const;
+        void write(BinaryStream& stream) const;
+
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
     struct SetInstruction {
         struct EaseOption {
-            std::uint8_t mEasingType{};
-            float        mEasingTime{};
+            EasingType mEasingType{};
+            float      mEasingTime{};
 
-            void                   write(BinaryStream& stream) const;
+            void write(BinaryStream& stream) const;
+
             [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
         };
 
@@ -57,7 +62,8 @@ struct CameraInstruction {
         std::optional<bool>       mDefault{};
         bool                      mRemoveIgnoreStartingValuesComponent{false};
 
-        void                   write(BinaryStream& stream) const;
+        void write(BinaryStream& stream) const;
+
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
@@ -65,17 +71,19 @@ struct CameraInstruction {
         std::optional<Vec3> mTargetCenterOffset{};
         std::int64_t        mTargetActorId{};
 
-        void                   write(BinaryStream& stream) const;
+        void write(BinaryStream& stream) const;
+
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
     struct FovInstruction {
-        float        mFieldOfView{};
-        float        mEaseTime{};
-        std::uint8_t mEaseType{};
-        bool         mClear{};
+        float      mFieldOfView{};
+        float      mEaseTime{};
+        EasingType mEaseType{};
+        bool       mClear{};
 
-        void                   write(BinaryStream& stream) const;
+        void write(BinaryStream& stream) const;
+
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
@@ -86,20 +94,22 @@ struct CameraInstruction {
         };
 
         struct SplineProgressOption {
-            float       mKeyFrameValue{};
-            float       mKeyFrameTime{};
-            std::string mKeyFrameEasingFunc{};
+            float      mKeyFrameValue{};
+            float      mKeyFrameTime{};
+            EasingType mKeyFrameEasingFunc{};
 
-            void                   write(BinaryStream& stream) const;
+            void write(BinaryStream& stream) const;
+
             [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
         };
 
         struct RotationOption {
-            Vec3        mKeyFrameValues{};
-            float       mKeyFrameTimes{};
-            std::string mKeyFrameEasingFunc{};
+            Vec3       mKeyFrameValues{};
+            float      mKeyFrameTimes{};
+            EasingType mKeyFrameEasingFunc{};
 
-            void                   write(BinaryStream& stream) const;
+            void write(BinaryStream& stream) const;
+
             [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
         };
 
@@ -108,15 +118,19 @@ struct CameraInstruction {
         std::vector<Vec3>                 mCurve{};
         std::vector<SplineProgressOption> mProgressKeyFrames{};
         std::vector<RotationOption>       mRotationOptions{};
+        std::optional<std::string>        mSplineIdentifier{};
+        std::optional<bool>               mLoadFromJson{};
 
-        void                   write(BinaryStream& stream) const;
+        void write(BinaryStream& stream) const;
+
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
     struct AttachToEntityInstruction {
         std::int64_t mActorUniqueId{};
 
-        void                   write(BinaryStream& stream) const;
+        void write(BinaryStream& stream) const;
+
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
@@ -130,7 +144,8 @@ struct CameraInstruction {
     std::optional<AttachToEntityInstruction> mAttach{};
     std::optional<bool>                      mDetachFromEntity{};
 
-    void                   write(BinaryStream& stream) const;
+    void write(BinaryStream& stream) const;
+
     [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
 };
 

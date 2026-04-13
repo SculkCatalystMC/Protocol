@@ -13,8 +13,10 @@ MinecraftPacketIds SimulationTypePacket::getId() const noexcept { return Minecra
 
 std::string_view SimulationTypePacket::getName() const noexcept { return "SimulationTypePacket"; }
 
-void SimulationTypePacket::write(BinaryStream& stream) const { stream.writeByte(mType); }
+void SimulationTypePacket::write(BinaryStream& stream) const { stream.writeEnum(mType, &BinaryStream::writeByte); }
 
-Result<> SimulationTypePacket::read(ReadOnlyBinaryStream& stream) { return stream.readByte(mType); }
+Result<> SimulationTypePacket::read(ReadOnlyBinaryStream& stream) {
+    return stream.readEnum(mType, &ReadOnlyBinaryStream::readByte);
+}
 
 } // namespace sculk::protocol::inline abi_v944

@@ -14,13 +14,13 @@ MinecraftPacketIds LessonProgressPacket::getId() const noexcept { return Minecra
 std::string_view LessonProgressPacket::getName() const noexcept { return "LessonProgressPacket"; }
 
 void LessonProgressPacket::write(BinaryStream& stream) const {
-    stream.writeVarInt(mAction);
+    stream.writeEnum(mAction, &BinaryStream::writeVarInt);
     stream.writeVarInt(mScore);
     stream.writeString(mActivityId);
 }
 
 Result<> LessonProgressPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readVarInt(mAction); !status) return status;
+    if (auto status = stream.readEnum(mAction, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readVarInt(mScore); !status) return status;
     return stream.readString(mActivityId);
 }

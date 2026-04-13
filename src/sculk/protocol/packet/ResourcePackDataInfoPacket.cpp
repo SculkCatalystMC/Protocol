@@ -22,7 +22,7 @@ void ResourcePackDataInfoPacket::write(BinaryStream& stream) const {
     stream.writeUnsignedInt64(mFileSize);
     stream.writeString(mFileHash);
     stream.writeBool(mIsPremiumPack);
-    stream.writeByte(mPackType);
+    stream.writeEnum(mPackType, &BinaryStream::writeByte);
 }
 
 Result<> ResourcePackDataInfoPacket::read(ReadOnlyBinaryStream& stream) {
@@ -32,7 +32,7 @@ Result<> ResourcePackDataInfoPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedInt64(mFileSize); !status) return status;
     if (auto status = stream.readString(mFileHash); !status) return status;
     if (auto status = stream.readBool(mIsPremiumPack); !status) return status;
-    return stream.readByte(mPackType);
+    return stream.readEnum(mPackType, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

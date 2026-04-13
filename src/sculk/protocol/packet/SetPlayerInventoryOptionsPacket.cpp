@@ -16,19 +16,19 @@ MinecraftPacketIds SetPlayerInventoryOptionsPacket::getId() const noexcept {
 std::string_view SetPlayerInventoryOptionsPacket::getName() const noexcept { return "SetPlayerInventoryOptionsPacket"; }
 
 void SetPlayerInventoryOptionsPacket::write(BinaryStream& stream) const {
-    stream.writeVarInt(mLeftInventoryTab);
-    stream.writeVarInt(mRightInventoryTab);
+    stream.writeEnum(mLeftInventoryTab, &BinaryStream::writeVarInt);
+    stream.writeEnum(mRightInventoryTab, &BinaryStream::writeVarInt);
     stream.writeBool(mFiltering);
-    stream.writeVarInt(mLayoutInventory);
-    stream.writeVarInt(mLayoutCraft);
+    stream.writeEnum(mLayoutInventory, &BinaryStream::writeVarInt);
+    stream.writeEnum(mLayoutCraft, &BinaryStream::writeVarInt);
 }
 
 Result<> SetPlayerInventoryOptionsPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readVarInt(mLeftInventoryTab); !status) return status;
-    if (auto status = stream.readVarInt(mRightInventoryTab); !status) return status;
+    if (auto status = stream.readEnum(mLeftInventoryTab, &ReadOnlyBinaryStream::readVarInt); !status) return status;
+    if (auto status = stream.readEnum(mRightInventoryTab, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readBool(mFiltering); !status) return status;
-    if (auto status = stream.readVarInt(mLayoutInventory); !status) return status;
-    return stream.readVarInt(mLayoutCraft);
+    if (auto status = stream.readEnum(mLayoutInventory, &ReadOnlyBinaryStream::readVarInt); !status) return status;
+    return stream.readEnum(mLayoutCraft, &ReadOnlyBinaryStream::readVarInt);
 }
 
 } // namespace sculk::protocol::inline abi_v944

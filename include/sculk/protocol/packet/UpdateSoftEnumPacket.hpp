@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/command/SoftEnumUpdateType.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
@@ -14,7 +15,7 @@ class UpdateSoftEnumPacket : public IPacket {
 public:
     std::string              mEnumName{};
     std::vector<std::string> mEnumValues{};
-    std::uint8_t             mUpdateType{};
+    SoftEnumUpdateType       mUpdateType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

@@ -6,6 +6,9 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "Difficulty.hpp"
+#include "sculk/protocol/actor/player/GameType.hpp"
+#include "sculk/protocol/actor/player/PlayerPermissionLevel.hpp"
 #include "sculk/protocol/level/Experiments.hpp"
 #include "sculk/protocol/level/GameRuleData.hpp"
 #include "sculk/protocol/level/SpawnSettings.hpp"
@@ -17,9 +20,9 @@ struct LevelSettings {
     std::uint64_t             mSeed{};
     SpawnSettings             mSpawnSettings{};
     int                       mGeneratorType{};
-    int                       mGameType{};
+    GameType                  mGameType{};
     bool                      mIsHardCore{};
-    int                       mDifficulty{};
+    Difficulty                mDifficulty{};
     BlockPos                  mSpawnPosition{};
     bool                      mAchievementDisabled{};
     int                       mEditorWorldType{};
@@ -42,7 +45,7 @@ struct LevelSettings {
     Experiments               mExperiments{};
     bool                      mBonusChest{};
     bool                      mStartsWithMap{};
-    int                       mPlayerPermission{};
+    PlayerPermissionLevel     mPlayerPermission{};
     std::int32_t              mTickRange{};
     bool                      mLockBehaviorPack{};
     bool                      mLockResourcePack{};

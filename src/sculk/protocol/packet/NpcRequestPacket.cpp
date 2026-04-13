@@ -15,7 +15,7 @@ std::string_view NpcRequestPacket::getName() const noexcept { return "NpcRequest
 
 void NpcRequestPacket::write(BinaryStream& stream) const {
     stream.writeUnsignedVarInt64(mActorRuntimeId);
-    stream.writeByte(mRequestType);
+    stream.writeEnum(mRequestType, &BinaryStream::writeByte);
     stream.writeString(mActions);
     stream.writeByte(mActionIndex);
     stream.writeString(mSceneName);
@@ -23,7 +23,7 @@ void NpcRequestPacket::write(BinaryStream& stream) const {
 
 Result<> NpcRequestPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedVarInt64(mActorRuntimeId); !status) return status;
-    if (auto status = stream.readByte(mRequestType); !status) return status;
+    if (auto status = stream.readEnum(mRequestType, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readString(mActions); !status) return status;
     if (auto status = stream.readByte(mActionIndex); !status) return status;
     return stream.readString(mSceneName);

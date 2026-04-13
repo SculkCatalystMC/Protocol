@@ -9,6 +9,7 @@
 #include "sculk/protocol/actor/ActorLink.hpp"
 #include "sculk/protocol/actor/MetaData.hpp"
 #include "sculk/protocol/actor/PropertySyncData.hpp"
+#include "sculk/protocol/actor/player/GameType.hpp"
 #include "sculk/protocol/actor/player/SerializedAbilitiesData.hpp"
 #include "sculk/protocol/actor/player/UUID.hpp"
 #include "sculk/protocol/inventory/item/NetworkItemStackDescriptor.hpp"
@@ -32,7 +33,7 @@ public:
     SerializedAbilitiesData    mAbilities{};
     std::string                mDeviceId{};
     std::uint32_t              mBuildPlatform{};
-    std::int32_t               mGameType{};
+    GameType                   mGameType{};
     NetworkItemStackDescriptor mCarriedItem{};
     MetaData                   mMetaData{};
     PropertySyncData           mSynchedProperties{};

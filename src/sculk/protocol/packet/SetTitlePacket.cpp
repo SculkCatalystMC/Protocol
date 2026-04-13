@@ -14,7 +14,7 @@ MinecraftPacketIds SetTitlePacket::getId() const noexcept { return MinecraftPack
 std::string_view SetTitlePacket::getName() const noexcept { return "SetTitlePacket"; }
 
 void SetTitlePacket::write(BinaryStream& stream) const {
-    stream.writeVarInt(mTitleType);
+    stream.writeEnum(mTitleType, &BinaryStream::writeVarInt);
     stream.writeString(mTitleText);
     stream.writeVarInt(mFadeInTime);
     stream.writeVarInt(mStayTime);
@@ -25,7 +25,7 @@ void SetTitlePacket::write(BinaryStream& stream) const {
 }
 
 Result<> SetTitlePacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readVarInt(mTitleType); !status) return status;
+    if (auto status = stream.readEnum(mTitleType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readString(mTitleText); !status) return status;
     if (auto status = stream.readVarInt(mFadeInTime); !status) return status;
     if (auto status = stream.readVarInt(mStayTime); !status) return status;

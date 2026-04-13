@@ -13,12 +13,23 @@ namespace sculk::protocol::inline abi_v944 {
 
 class CameraAimAssistPacket : public IPacket {
 public:
-    std::string  mPresetId{};
-    Vec2         mViewAngle{};
-    float        mDistance{};
-    std::uint8_t mTargetMode{};
-    std::uint8_t mAction{};
-    bool         mShowDebugRender{true};
+    enum class TargetMode : std::uint8_t {
+        Angle    = 0,
+        Distance = 1,
+    };
+
+    enum class Action : std::uint8_t {
+        Set   = 0,
+        Clear = 1,
+    };
+
+public:
+    std::string mPresetId{};
+    Vec2        mViewAngle{};
+    float       mDistance{};
+    TargetMode  mTargetMode{};
+    Action      mAction{};
+    bool        mShowDebugRender{true};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

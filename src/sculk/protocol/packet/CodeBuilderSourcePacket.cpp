@@ -14,15 +14,15 @@ MinecraftPacketIds CodeBuilderSourcePacket::getId() const noexcept { return Mine
 std::string_view CodeBuilderSourcePacket::getName() const noexcept { return "CodeBuilderSourcePacket"; }
 
 void CodeBuilderSourcePacket::write(BinaryStream& stream) const {
-    stream.writeByte(mOperation);
-    stream.writeByte(mCategory);
-    stream.writeByte(mCodeStatus);
+    stream.writeEnum(mOperation, &BinaryStream::writeByte);
+    stream.writeEnum(mCategory, &BinaryStream::writeByte);
+    stream.writeEnum(mCodeStatus, &BinaryStream::writeByte);
 }
 
 Result<> CodeBuilderSourcePacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readByte(mOperation); !status) return status;
-    if (auto status = stream.readByte(mCategory); !status) return status;
-    return stream.readByte(mCodeStatus);
+    if (auto status = stream.readEnum(mOperation, &ReadOnlyBinaryStream::readByte); !status) return status;
+    if (auto status = stream.readEnum(mCategory, &ReadOnlyBinaryStream::readByte); !status) return status;
+    return stream.readEnum(mCodeStatus, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

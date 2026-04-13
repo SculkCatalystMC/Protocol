@@ -28,7 +28,9 @@ void CameraPreset::write(BinaryStream& stream) const {
     stream.writeOptional(mRadius, &BinaryStream::writeFloat);
     stream.writeOptional(mYawLimitMin, &BinaryStream::writeFloat);
     stream.writeOptional(mYawLimitMax, &BinaryStream::writeFloat);
-    stream.writeOptional(mListener, &BinaryStream::writeByte);
+    stream.writeOptional(mListener, [](BinaryStream& stream, AudioListener value) {
+        stream.writeEnum(value, &BinaryStream::writeByte);
+    });
     stream.writeOptional(mPlayerEffects, &BinaryStream::writeBool);
     stream.writeOptional(mAimAssist, &CameraPresetAimAssistDefinition::write);
     stream.writeOptional(mControlScheme, [](BinaryStream& stream, ControlScheme value) {
@@ -56,7 +58,14 @@ Result<> CameraPreset::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readOptional(mRadius, &ReadOnlyBinaryStream::readFloat); !status) return status;
     if (auto status = stream.readOptional(mYawLimitMin, &ReadOnlyBinaryStream::readFloat); !status) return status;
     if (auto status = stream.readOptional(mYawLimitMax, &ReadOnlyBinaryStream::readFloat); !status) return status;
-    if (auto status = stream.readOptional(mListener, &ReadOnlyBinaryStream::readByte); !status) return status;
+    if (auto status = stream.readOptional(
+            mListener,
+            [](ReadOnlyBinaryStream& stream, AudioListener& value) {
+                return stream.readEnum(value, &ReadOnlyBinaryStream::readByte);
+            }
+        );
+        !status)
+        return status;
     if (auto status = stream.readOptional(mPlayerEffects, &ReadOnlyBinaryStream::readBool); !status) return status;
     if (auto status = stream.readOptional(mAimAssist, &CameraPresetAimAssistDefinition::read); !status) return status;
     return stream.readOptional(mControlScheme, [](ReadOnlyBinaryStream& stream, ControlScheme& value) {

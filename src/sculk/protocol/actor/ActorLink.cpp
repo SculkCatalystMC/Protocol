@@ -12,7 +12,7 @@ namespace sculk::protocol::inline abi_v944 {
 void ActorLink::write(BinaryStream& stream) const {
     stream.writeVarInt64(mTargetAUniqueId);
     stream.writeVarInt64(mTargetBUniqueId);
-    stream.writeByte(mType);
+    stream.writeEnum(mType, &BinaryStream::writeByte);
     stream.writeBool(mImmediate);
     stream.writeBool(mPassengerInitiated);
     stream.writeFloat(mVehicleAngularVelocity);
@@ -21,7 +21,7 @@ void ActorLink::write(BinaryStream& stream) const {
 Result<> ActorLink::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readVarInt64(mTargetAUniqueId); !status) return status;
     if (auto status = stream.readVarInt64(mTargetBUniqueId); !status) return status;
-    if (auto status = stream.readByte(mType); !status) return status;
+    if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readBool(mImmediate); !status) return status;
     if (auto status = stream.readBool(mPassengerInitiated); !status) return status;
     return stream.readFloat(mVehicleAngularVelocity);

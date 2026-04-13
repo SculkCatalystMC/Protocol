@@ -12,8 +12,16 @@ namespace sculk::protocol::inline abi_v944 {
 
 class MobEffectPacket : public IPacket {
 public:
+    enum class Event : std::uint8_t {
+        Invalid = 0,
+        Add     = 1,
+        Update  = 2,
+        Remove  = 3,
+    };
+
+public:
     std::uint64_t mActorRuntimeId{};
-    std::uint8_t  mEventId{};
+    Event         mEventId{};
     std::int32_t  mEffectId{};
     std::int32_t  mEffectAmplifier{};
     bool          mShowParticles{};

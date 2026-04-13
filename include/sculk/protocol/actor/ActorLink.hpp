@@ -11,13 +11,15 @@
 
 namespace sculk::protocol::inline abi_v944 {
 
+enum class ActorLinkType : std::uint8_t { None = 0, Riding = 1, Passenger = 2 };
+
 struct ActorLink {
-    std::uint8_t mType{};
-    std::int64_t mTargetAUniqueId{};
-    std::int64_t mTargetBUniqueId{};
-    bool         mImmediate{};
-    bool         mPassengerInitiated{};
-    float        mVehicleAngularVelocity{};
+    ActorLinkType mType{};
+    std::int64_t  mTargetAUniqueId{};
+    std::int64_t  mTargetBUniqueId{};
+    bool          mImmediate{};
+    bool          mPassengerInitiated{};
+    float         mVehicleAngularVelocity{};
 
     void write(BinaryStream& stream) const;
 

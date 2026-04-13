@@ -63,11 +63,18 @@ struct CameraAimAssistPresetDefinition {
     [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
 };
 
-struct CameraPresetAimAssistDefinition {
-    std::optional<std::string>  mPresetId{};
-    std::optional<std::int32_t> mTargetMode{};
-    std::optional<Vec2>         mViewAngle{};
-    std::optional<float>        mDistance{};
+class CameraPresetAimAssistDefinition {
+public:
+    enum class TargetMode : std::uint8_t {
+        Angle    = 0,
+        Distance = 1,
+    };
+
+public:
+    std::optional<std::string> mPresetId{};
+    std::optional<TargetMode>  mTargetMode{};
+    std::optional<Vec2>        mViewAngle{};
+    std::optional<float>       mDistance{};
 
     void write(BinaryStream& stream) const;
 

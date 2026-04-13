@@ -18,13 +18,13 @@ std::string_view PositionTrackingDBServerBroadcastPacket::getName() const noexce
 }
 
 void PositionTrackingDBServerBroadcastPacket::write(BinaryStream& stream) const {
-    stream.writeByte(mAction);
+    stream.writeEnum(mAction, &BinaryStream::writeByte);
     stream.writeVarInt(mPositionTrackingId);
     mPositionTrackingData.write(stream);
 }
 
 Result<> PositionTrackingDBServerBroadcastPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readByte(mAction); !status) return status;
+    if (auto status = stream.readEnum(mAction, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readVarInt(mPositionTrackingId); !status) return status;
     return mPositionTrackingData.read(stream);
 }

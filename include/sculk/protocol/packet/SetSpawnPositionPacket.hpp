@@ -13,10 +13,16 @@ namespace sculk::protocol::inline abi_v944 {
 
 class SetSpawnPositionPacket : public IPacket {
 public:
-    std::int32_t mSpawnPositionType{};
-    BlockPos     mBlockPosition{};
-    std::int32_t mDimensionType{};
-    BlockPos     mSpawnBlockPos{};
+    enum class SpawnPositionType : std::int32_t {
+        PlayerRespawn = 0,
+        WorldSpawn    = 1,
+    };
+
+public:
+    SpawnPositionType mSpawnPositionType{};
+    BlockPos          mBlockPosition{};
+    std::int32_t      mDimensionType{};
+    BlockPos          mSpawnBlockPos{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

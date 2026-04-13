@@ -13,8 +13,12 @@ MinecraftPacketIds SetPlayerGameTypePacket::getId() const noexcept { return Mine
 
 std::string_view SetPlayerGameTypePacket::getName() const noexcept { return "SetPlayerGameTypePacket"; }
 
-void SetPlayerGameTypePacket::write(BinaryStream& stream) const { stream.writeVarInt(mGameType); }
+void SetPlayerGameTypePacket::write(BinaryStream& stream) const {
+    stream.writeEnum(mGameType, &BinaryStream::writeVarInt);
+}
 
-Result<> SetPlayerGameTypePacket::read(ReadOnlyBinaryStream& stream) { return stream.readVarInt(mGameType); }
+Result<> SetPlayerGameTypePacket::read(ReadOnlyBinaryStream& stream) {
+    return stream.readEnum(mGameType, &ReadOnlyBinaryStream::readVarInt);
+}
 
 } // namespace sculk::protocol::inline abi_v944

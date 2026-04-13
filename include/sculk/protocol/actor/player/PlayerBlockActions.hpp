@@ -6,7 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/actor/PlayerActionType.hpp"
+#include "sculk/protocol/actor/player/PlayerActionType.hpp"
 #include "sculk/protocol/level/block/BlockPos.hpp"
 
 namespace sculk::protocol::inline abi_v944 {

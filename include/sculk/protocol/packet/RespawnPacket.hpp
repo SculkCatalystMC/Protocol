@@ -13,9 +13,16 @@ namespace sculk::protocol::inline abi_v944 {
 
 class RespawnPacket : public IPacket {
 public:
-    Vec3          mPosition{};
-    std::uint8_t  mState{};
-    std::uint64_t mActorRuntimeId{};
+    enum class PlayerRespawnState : std::uint8_t {
+        SearchingForSpawn  = 0,
+        ReadyToSpawn       = 1,
+        ClientReadyToSpawn = 2,
+    };
+
+public:
+    Vec3               mPosition{};
+    PlayerRespawnState mState{};
+    std::uint64_t      mActorRuntimeId{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

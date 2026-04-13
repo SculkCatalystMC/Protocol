@@ -6,13 +6,14 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/connection/PlayStatus.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 class PlayStatusPacket : public IPacket {
 public:
-    std::int32_t mStatus{};
+    PlayStatus mStatus{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

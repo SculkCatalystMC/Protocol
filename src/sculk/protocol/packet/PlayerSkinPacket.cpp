@@ -18,15 +18,13 @@ void PlayerSkinPacket::write(BinaryStream& stream) const {
     mSerializedSkin.write(stream);
     stream.writeString(mNewSkinName);
     stream.writeString(mOldSkinName);
-    stream.writeBool(mIsTrustedSkin);
 }
 
 Result<> PlayerSkinPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mUUID.read(stream); !status) return status;
     if (auto status = mSerializedSkin.read(stream); !status) return status;
     if (auto status = stream.readString(mNewSkinName); !status) return status;
-    if (auto status = stream.readString(mOldSkinName); !status) return status;
-    return stream.readBool(mIsTrustedSkin);
+    return stream.readString(mOldSkinName);
 }
 
 } // namespace sculk::protocol::inline abi_v944

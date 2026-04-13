@@ -16,15 +16,15 @@ std::string_view CameraShakePacket::getName() const noexcept { return "CameraSha
 void CameraShakePacket::write(BinaryStream& stream) const {
     stream.writeFloat(mIntensity);
     stream.writeFloat(mSeconds);
-    stream.writeByte(mType);
-    stream.writeByte(mAction);
+    stream.writeEnum(mType, &BinaryStream::writeByte);
+    stream.writeEnum(mAction, &BinaryStream::writeByte);
 }
 
 Result<> CameraShakePacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readFloat(mIntensity); !status) return status;
     if (auto status = stream.readFloat(mSeconds); !status) return status;
-    if (auto status = stream.readByte(mType); !status) return status;
-    return stream.readByte(mAction);
+    if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readByte); !status) return status;
+    return stream.readEnum(mAction, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

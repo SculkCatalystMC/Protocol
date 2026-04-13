@@ -6,6 +6,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/actor/ActorType.hpp"
+#include "sculk/protocol/actor/InteractionType.hpp"
+#include "sculk/protocol/actor/POIBlockInteractionType.hpp"
+#include "sculk/protocol/actor/player/AchievementIds.hpp"
 #include "sculk/protocol/level/LegacyTelemetryEventType.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 #include <variant>
@@ -15,15 +19,15 @@ namespace sculk::protocol::inline abi_v944 {
 class LegacyTelemetryEventPacket : public IPacket {
 public:
     struct Achievement {
-        int mAchievementId{};
+        AchievementIds mAchievementId{};
     };
 
     struct Interaction {
-        std::int64_t mInteractedEntityId{};
-        int          mInteractionType{};
-        int          mInteractionActorType{};
-        int          mInteractionActorVariant{};
-        std::uint8_t mInteractionActorColor{};
+        std::int64_t    mInteractedEntityId{};
+        InteractionType mInteractionType{};
+        int             mInteractionActorType{};
+        int             mInteractionActorVariant{};
+        std::uint8_t    mInteractionActorColor{};
     };
 
     struct PortalCreated {
@@ -38,7 +42,7 @@ public:
     struct MobKilled {
         std::int64_t mKillerActorId{};
         std::int64_t mKilledActorId{};
-        int          mKillerChildActorType{};
+        ActorType    mKillerChildActorType{};
         int          mDamageSource{};
         int          mTradeTier{};
         std::string  mTraderName{};
@@ -71,19 +75,19 @@ public:
     };
 
     struct MobBorn {
-        int          mMobType{};
+        ActorType    mMobType{};
         int          mMobVariant{};
         std::uint8_t mColor{};
     };
 
     struct POICauldronUsed {
-        std::int32_t mInteractionType{};
-        std::int32_t mItemId{};
+        POIBlockInteractionType mInteractionType{};
+        std::int32_t            mItemId{};
     };
 
     struct ComposterUsed {
-        std::int32_t mInteractionType{};
-        std::int32_t mItemId{};
+        POIBlockInteractionType mInteractionType{};
+        std::int32_t            mItemId{};
     };
 
     struct BellUsed {

@@ -15,7 +15,7 @@ std::string_view PlayerActionPacket::getName() const noexcept { return "PlayerAc
 
 void PlayerActionPacket::write(BinaryStream& stream) const {
     stream.writeUnsignedVarInt64(mPlayerRuntimeId);
-    stream.writeVarInt(mAction);
+    stream.writeEnum(mAction, &BinaryStream::writeVarInt);
     mBlockPosition.write(stream);
     mResultPosition.write(stream);
     stream.writeVarInt(mFace);
@@ -23,7 +23,7 @@ void PlayerActionPacket::write(BinaryStream& stream) const {
 
 Result<> PlayerActionPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedVarInt64(mPlayerRuntimeId); !status) return status;
-    if (auto status = stream.readVarInt(mAction); !status) return status;
+    if (auto status = stream.readEnum(mAction, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = mBlockPosition.read(stream); !status) return status;
     if (auto status = mResultPosition.read(stream); !status) return status;
     return stream.readVarInt(mFace);

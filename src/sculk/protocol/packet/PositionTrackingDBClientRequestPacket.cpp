@@ -18,12 +18,12 @@ std::string_view PositionTrackingDBClientRequestPacket::getName() const noexcept
 }
 
 void PositionTrackingDBClientRequestPacket::write(BinaryStream& stream) const {
-    stream.writeByte(mAction);
+    stream.writeEnum(mAction, &BinaryStream::writeByte);
     stream.writeVarInt(mPositionTrackingId);
 }
 
 Result<> PositionTrackingDBClientRequestPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readByte(mAction); !status) return status;
+    if (auto status = stream.readEnum(mAction, &ReadOnlyBinaryStream::readByte); !status) return status;
     return stream.readVarInt(mPositionTrackingId);
 }
 

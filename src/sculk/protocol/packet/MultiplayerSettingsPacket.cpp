@@ -13,8 +13,12 @@ MinecraftPacketIds MultiplayerSettingsPacket::getId() const noexcept { return Mi
 
 std::string_view MultiplayerSettingsPacket::getName() const noexcept { return "MultiplayerSettingsPacket"; }
 
-void MultiplayerSettingsPacket::write(BinaryStream& stream) const { stream.writeVarInt(mType); }
+void MultiplayerSettingsPacket::write(BinaryStream& stream) const {
+    stream.writeEnum(mType, &BinaryStream::writeVarInt);
+}
 
-Result<> MultiplayerSettingsPacket::read(ReadOnlyBinaryStream& stream) { return stream.readVarInt(mType); }
+Result<> MultiplayerSettingsPacket::read(ReadOnlyBinaryStream& stream) {
+    return stream.readEnum(mType, &ReadOnlyBinaryStream::readVarInt);
+}
 
 } // namespace sculk::protocol::inline abi_v944

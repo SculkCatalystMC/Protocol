@@ -187,8 +187,8 @@ bool JsonWebToken::verifyES384(std::string_view ecPublicKeyPem) const {
 
     const std::string signingInput = getSigningInput(*this);
     const bool        ok           = EVP_DigestVerifyInit(ctx.get(), nullptr, EVP_sha384(), nullptr, pkey.get()) == 1
-                                  && EVP_DigestVerifyUpdate(ctx.get(), signingInput.data(), signingInput.size()) == 1
-                                  && EVP_DigestVerifyFinal(ctx.get(), derSignature.data(), derSignature.size()) == 1;
+                 && EVP_DigestVerifyUpdate(ctx.get(), signingInput.data(), signingInput.size()) == 1
+                 && EVP_DigestVerifyFinal(ctx.get(), derSignature.data(), derSignature.size()) == 1;
 
     return ok;
 }
@@ -248,8 +248,8 @@ std::string JsonWebToken::signES384(std::string_view ecPrivateKeyPem) {
     const std::string signingInput = getSigningInput(*this);
     std::size_t       derSize      = 0;
     bool              ok           = EVP_DigestSignInit(ctx.get(), nullptr, EVP_sha384(), nullptr, pkey.get()) == 1
-                                  && EVP_DigestSignUpdate(ctx.get(), signingInput.data(), signingInput.size()) == 1
-                                  && EVP_DigestSignFinal(ctx.get(), nullptr, &derSize) == 1;
+           && EVP_DigestSignUpdate(ctx.get(), signingInput.data(), signingInput.size()) == 1
+           && EVP_DigestSignFinal(ctx.get(), nullptr, &derSize) == 1;
 
     std::vector<std::uint8_t> derSignature;
     if (ok) {
@@ -293,8 +293,8 @@ std::string JsonWebToken::signRS256(std::string_view rsaPrivateKeyPem) {
     const std::string signingInput  = getSigningInput(*this);
     std::size_t       signatureSize = 0;
     bool              ok            = EVP_DigestSignInit(ctx.get(), nullptr, EVP_sha256(), nullptr, pkey.get()) == 1
-                                   && EVP_DigestSignUpdate(ctx.get(), signingInput.data(), signingInput.size()) == 1
-                                   && EVP_DigestSignFinal(ctx.get(), nullptr, &signatureSize) == 1;
+           && EVP_DigestSignUpdate(ctx.get(), signingInput.data(), signingInput.size()) == 1
+           && EVP_DigestSignFinal(ctx.get(), nullptr, &signatureSize) == 1;
 
     std::vector<std::uint8_t> signature;
     if (ok) {

@@ -17,8 +17,8 @@ void PhotoTransferPacket::write(BinaryStream& stream) const {
     stream.writeString(mPhotoName);
     stream.writeString(mPhotoData);
     stream.writeString(mBookId);
-    stream.writeByte(mType);
-    stream.writeByte(mSourceType);
+    stream.writeEnum(mType, &BinaryStream::writeByte);
+    stream.writeEnum(mSourceType, &BinaryStream::writeByte);
     stream.writeSignedInt64(mOwnerId);
     stream.writeString(mNewPhotoName);
 }
@@ -27,8 +27,8 @@ Result<> PhotoTransferPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mPhotoName); !status) return status;
     if (auto status = stream.readString(mPhotoData); !status) return status;
     if (auto status = stream.readString(mBookId); !status) return status;
-    if (auto status = stream.readByte(mType); !status) return status;
-    if (auto status = stream.readByte(mSourceType); !status) return status;
+    if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readByte); !status) return status;
+    if (auto status = stream.readEnum(mSourceType, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readSignedInt64(mOwnerId); !status) return status;
     return stream.readString(mNewPhotoName);
 }

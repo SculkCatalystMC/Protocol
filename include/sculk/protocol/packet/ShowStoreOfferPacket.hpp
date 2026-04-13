@@ -12,8 +12,15 @@ namespace sculk::protocol::inline abi_v944 {
 
 class ShowStoreOfferPacket : public IPacket {
 public:
-    std::string  mProductUuid{};
-    std::uint8_t mRedirectType{};
+    enum class Type : std::uint8_t {
+        MarketplaceOffer     = 0,
+        DressingRoomOffer    = 1,
+        ThirdPartyServerPage = 2,
+    };
+
+public:
+    std::string mProductUuid{};
+    Type        mRedirectType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

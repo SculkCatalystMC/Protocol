@@ -41,5 +41,5 @@
 *.dwo
 
 # build directory
-build/
-docs/
+/build/
+/docs/

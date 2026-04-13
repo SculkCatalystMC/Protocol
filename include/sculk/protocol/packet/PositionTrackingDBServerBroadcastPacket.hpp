@@ -13,7 +13,14 @@ namespace sculk::protocol::inline abi_v944 {
 
 class PositionTrackingDBServerBroadcastPacket : public IPacket {
 public:
-    std::uint8_t mAction{};
+    enum class Action : std::uint8_t {
+        Update   = 0,
+        Destroy  = 1,
+        NotFound = 2,
+    };
+
+public:
+    Action       mAction{};
     std::int32_t mPositionTrackingId{};
     CompoundTag  mPositionTrackingData{};
 

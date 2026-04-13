@@ -16,13 +16,13 @@ std::string_view UpdateSoftEnumPacket::getName() const noexcept { return "Update
 void UpdateSoftEnumPacket::write(BinaryStream& stream) const {
     stream.writeString(mEnumName);
     stream.writeArray(mEnumValues, &BinaryStream::writeString);
-    stream.writeByte(mUpdateType);
+    stream.writeEnum(mUpdateType, &BinaryStream::writeByte);
 }
 
 Result<> UpdateSoftEnumPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mEnumName); !status) return status;
     if (auto status = stream.readArray(mEnumValues, &ReadOnlyBinaryStream::readString); !status) return status;
-    return stream.readByte(mUpdateType);
+    return stream.readEnum(mUpdateType, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

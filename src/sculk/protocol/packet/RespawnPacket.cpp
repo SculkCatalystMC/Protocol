@@ -15,13 +15,13 @@ std::string_view RespawnPacket::getName() const noexcept { return "RespawnPacket
 
 void RespawnPacket::write(BinaryStream& stream) const {
     mPosition.write(stream);
-    stream.writeByte(mState);
+    stream.writeEnum(mState, &BinaryStream::writeByte);
     stream.writeUnsignedVarInt64(mActorRuntimeId);
 }
 
 Result<> RespawnPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mPosition.read(stream); !status) return status;
-    if (auto status = stream.readByte(mState); !status) return status;
+    if (auto status = stream.readEnum(mState, &ReadOnlyBinaryStream::readByte); !status) return status;
     return stream.readUnsignedVarInt64(mActorRuntimeId);
 }
 

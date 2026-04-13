@@ -18,7 +18,7 @@ std::string_view StartGamePacket::getName() const noexcept { return "StartGamePa
 void StartGamePacket::write(BinaryStream& stream) const {
     stream.writeVarInt64(mActorUniqueId);
     stream.writeUnsignedVarInt64(mActorRuntimeId);
-    stream.writeVarInt(mGameType);
+    stream.writeEnum(mGameType, &BinaryStream::writeVarInt);
     mPosition.write(stream);
     mRotation.write(stream);
     mLevelSettings.write(stream);
@@ -46,7 +46,7 @@ void StartGamePacket::write(BinaryStream& stream) const {
 Result<> StartGamePacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readVarInt64(mActorUniqueId); !status) return status;
     if (auto status = stream.readUnsignedVarInt64(mActorRuntimeId); !status) return status;
-    if (auto status = stream.readVarInt(mGameType); !status) return status;
+    if (auto status = stream.readEnum(mGameType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = mPosition.read(stream); !status) return status;
     if (auto status = mRotation.read(stream); !status) return status;
     if (auto status = mLevelSettings.read(stream); !status) return status;

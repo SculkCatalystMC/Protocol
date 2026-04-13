@@ -12,11 +12,18 @@ namespace sculk::protocol::inline abi_v944 {
 
 class PhotoTransferPacket : public IPacket {
 public:
+    enum class PhotoType : std::uint8_t {
+        Portfolio = 0,
+        PhotoItem = 1,
+        Book      = 2,
+    };
+
+public:
     std::string  mPhotoName{};
     std::string  mPhotoData{};
     std::string  mBookId{};
-    std::uint8_t mType{};
-    std::uint8_t mSourceType{};
+    PhotoType    mType{};
+    PhotoType    mSourceType{};
     std::int64_t mOwnerId{};
     std::string  mNewPhotoName{};
 

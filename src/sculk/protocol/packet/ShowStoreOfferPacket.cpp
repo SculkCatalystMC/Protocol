@@ -15,12 +15,12 @@ std::string_view ShowStoreOfferPacket::getName() const noexcept { return "ShowSt
 
 void ShowStoreOfferPacket::write(BinaryStream& stream) const {
     stream.writeString(mProductUuid);
-    stream.writeByte(mRedirectType);
+    stream.writeEnum(mRedirectType, &BinaryStream::writeByte);
 }
 
 Result<> ShowStoreOfferPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readString(mProductUuid); !status) return status;
-    return stream.readByte(mRedirectType);
+    return stream.readEnum(mRedirectType, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

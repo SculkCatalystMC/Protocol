@@ -13,18 +13,18 @@ void SerializedSkin::Animation::write(BinaryStream& stream) const {
     stream.writeUnsignedInt(mWidth);
     stream.writeUnsignedInt(mHeight);
     stream.writeString(mSkinImageBytes);
-    stream.writeUnsignedInt(mAnimationType);
+    stream.writeEnum(mAnimationType, &BinaryStream::writeUnsignedInt);
     stream.writeFloat(mFrameCount);
-    stream.writeUnsignedInt(mAnimationExpression);
+    stream.writeEnum(mAnimationExpression, &BinaryStream::writeUnsignedInt);
 }
 
 Result<> SerializedSkin::Animation::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedInt(mWidth); !status) return status;
     if (auto status = stream.readUnsignedInt(mHeight); !status) return status;
     if (auto status = stream.readString(mSkinImageBytes); !status) return status;
-    if (auto status = stream.readUnsignedInt(mAnimationType); !status) return status;
+    if (auto status = stream.readEnum(mAnimationType, &ReadOnlyBinaryStream::readUnsignedInt); !status) return status;
     if (auto status = stream.readFloat(mFrameCount); !status) return status;
-    return stream.readUnsignedInt(mAnimationExpression);
+    return stream.readEnum(mAnimationExpression, &ReadOnlyBinaryStream::readUnsignedInt);
 }
 
 void SerializedSkin::PersonaPiece::write(BinaryStream& stream) const {

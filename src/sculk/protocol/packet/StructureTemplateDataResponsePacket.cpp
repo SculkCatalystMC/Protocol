@@ -23,7 +23,7 @@ void StructureTemplateDataResponsePacket::write(BinaryStream& stream) const {
     if (mSuccess) {
         mNbt.write(stream);
     }
-    stream.writeByte(mResponseType);
+    stream.writeEnum(mResponseType, &BinaryStream::writeByte);
 }
 
 Result<> StructureTemplateDataResponsePacket::read(ReadOnlyBinaryStream& stream) {
@@ -32,7 +32,7 @@ Result<> StructureTemplateDataResponsePacket::read(ReadOnlyBinaryStream& stream)
     if (mSuccess) {
         if (auto status = mNbt.read(stream); !status) return status;
     }
-    return stream.readByte(mResponseType);
+    return stream.readEnum(mResponseType, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

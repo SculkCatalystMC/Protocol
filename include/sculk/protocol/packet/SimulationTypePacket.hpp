@@ -12,7 +12,15 @@ namespace sculk::protocol::inline abi_v944 {
 
 class SimulationTypePacket : public IPacket {
 public:
-    std::uint8_t mType{};
+    enum class SimulationType : std::uint8_t {
+        Game    = 0,
+        Editor  = 1,
+        Test    = 2,
+        Invalid = 3,
+    };
+
+public:
+    SimulationType mType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

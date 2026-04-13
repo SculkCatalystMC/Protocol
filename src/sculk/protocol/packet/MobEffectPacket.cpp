@@ -15,7 +15,7 @@ std::string_view MobEffectPacket::getName() const noexcept { return "MobEffectPa
 
 void MobEffectPacket::write(BinaryStream& stream) const {
     stream.writeUnsignedVarInt64(mActorRuntimeId);
-    stream.writeByte(mEventId);
+    stream.writeEnum(mEventId, &BinaryStream::writeByte);
     stream.writeVarInt(mEffectId);
     stream.writeVarInt(mEffectAmplifier);
     stream.writeBool(mShowParticles);
@@ -26,7 +26,7 @@ void MobEffectPacket::write(BinaryStream& stream) const {
 
 Result<> MobEffectPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedVarInt64(mActorRuntimeId); !status) return status;
-    if (auto status = stream.readByte(mEventId); !status) return status;
+    if (auto status = stream.readEnum(mEventId, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readVarInt(mEffectId); !status) return status;
     if (auto status = stream.readVarInt(mEffectAmplifier); !status) return status;
     if (auto status = stream.readBool(mShowParticles); !status) return status;

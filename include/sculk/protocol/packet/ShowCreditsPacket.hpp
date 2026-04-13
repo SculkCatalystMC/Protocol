@@ -12,8 +12,14 @@ namespace sculk::protocol::inline abi_v944 {
 
 class ShowCreditsPacket : public IPacket {
 public:
+    enum class CreditsState : std::int32_t {
+        Start    = 0,
+        Finished = 1,
+    };
+
+public:
     std::uint64_t mPlayerRuntimeId{};
-    std::int32_t  mCreditsState{};
+    CreditsState  mCreditsState{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

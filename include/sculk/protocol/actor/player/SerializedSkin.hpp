@@ -11,14 +11,62 @@
 
 namespace sculk::protocol::inline abi_v944 {
 
-struct SerializedSkin {
+enum class AnimatedTextureType : std::uint32_t {
+    Face        = 1,
+    Body32x32   = 2,
+    Body128x128 = 3,
+};
+
+enum class AnimationExpression : std::uint32_t {
+    Linear   = 0,
+    Blinking = 1,
+};
+
+class SerializedSkin {
+public:
+    enum class PieceType : std::uint32_t {
+        Skeleton      = 1,
+        Body          = 2,
+        Skin          = 3,
+        Bottom        = 4,
+        Feet          = 5,
+        Dress         = 6,
+        Top           = 7,
+        HighPants     = 8,
+        Hands         = 9,
+        Outerwear     = 10,
+        FacialHair    = 11,
+        Mouth         = 12,
+        Eyes          = 13,
+        Hair          = 14,
+        Hood          = 15,
+        Back          = 16,
+        FaceAccessory = 17,
+        Head          = 18,
+        Legs          = 19,
+        LeftLeg       = 20,
+        RightLeg      = 21,
+        Arms          = 22,
+        LeftArm       = 23,
+        RightArm      = 24,
+        Capes         = 25,
+        ClassicSkin   = 26,
+        Emote         = 27
+    };
+
+    enum class ArmSizeType : std::uint8_t {
+        Slim = 0,
+        Wide = 1,
+    };
+
+public:
     struct Animation {
-        std::uint32_t mWidth{};
-        std::uint32_t mHeight{};
-        std::string   mSkinImageBytes{};
-        std::uint32_t mAnimationType{};
-        float         mFrameCount{};
-        std::uint32_t mAnimationExpression{};
+        std::uint32_t       mWidth{};
+        std::uint32_t       mHeight{};
+        std::string         mSkinImageBytes{};
+        AnimatedTextureType mAnimationType{};
+        float               mFrameCount{};
+        AnimationExpression mAnimationExpression{};
 
         void write(BinaryStream& stream) const;
 
@@ -46,6 +94,7 @@ struct SerializedSkin {
         [[nodiscard]] Result<> read(ReadOnlyBinaryStream& stream);
     };
 
+public:
     std::string                  mId{};
     std::string                  mPlayFabId{};
     std::string                  mResourcePatch{};

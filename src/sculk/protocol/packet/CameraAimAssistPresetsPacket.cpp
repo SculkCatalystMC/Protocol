@@ -18,13 +18,13 @@ std::string_view CameraAimAssistPresetsPacket::getName() const noexcept { return
 void CameraAimAssistPresetsPacket::write(BinaryStream& stream) const {
     stream.writeArray(mCatagory, &CameraAimAssistCategoryDefinition::write);
     stream.writeArray(mPreset, &CameraAimAssistPresetDefinition::write);
-    stream.writeByte(mOperation);
+    stream.writeEnum(mOperation, &BinaryStream::writeByte);
 }
 
 Result<> CameraAimAssistPresetsPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readArray(mCatagory, &CameraAimAssistCategoryDefinition::read); !status) return status;
     if (auto status = stream.readArray(mPreset, &CameraAimAssistPresetDefinition::read); !status) return status;
-    return stream.readByte(mOperation);
+    return stream.readEnum(mOperation, &ReadOnlyBinaryStream::readByte);
 }
 
 } // namespace sculk::protocol::inline abi_v944

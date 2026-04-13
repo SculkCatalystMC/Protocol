@@ -13,8 +13,12 @@ MinecraftPacketIds PlayStatusPacket::getId() const noexcept { return MinecraftPa
 
 std::string_view PlayStatusPacket::getName() const noexcept { return "PlayStatusPacket"; }
 
-void PlayStatusPacket::write(BinaryStream& stream) const { stream.writeSignedBigEndianInt(mStatus); }
+void PlayStatusPacket::write(BinaryStream& stream) const {
+    stream.writeEnum(mStatus, &BinaryStream::writeSignedBigEndianInt);
+}
 
-Result<> PlayStatusPacket::read(ReadOnlyBinaryStream& stream) { return stream.readSignedBigEndianInt(mStatus); }
+Result<> PlayStatusPacket::read(ReadOnlyBinaryStream& stream) {
+    return stream.readEnum(mStatus, &ReadOnlyBinaryStream::readSignedBigEndianInt);
+}
 
 } // namespace sculk::protocol::inline abi_v944

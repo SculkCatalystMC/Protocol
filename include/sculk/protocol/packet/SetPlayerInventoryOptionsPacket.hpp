@@ -6,17 +6,20 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/inventory/InventoryLayout.hpp"
+#include "sculk/protocol/inventory/InventoryLeftTabIndex.hpp"
+#include "sculk/protocol/inventory/InventoryRightTabIndex.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 class SetPlayerInventoryOptionsPacket : public IPacket {
 public:
-    std::int32_t mLeftInventoryTab{};
-    std::int32_t mRightInventoryTab{};
-    bool         mFiltering{};
-    std::int32_t mLayoutInventory{};
-    std::int32_t mLayoutCraft{};
+    InventoryLeftTabIndex  mLeftInventoryTab{};
+    InventoryRightTabIndex mRightInventoryTab{};
+    bool                   mFiltering{};
+    InventoryLayout        mLayoutInventory{};
+    InventoryLayout        mLayoutCraft{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

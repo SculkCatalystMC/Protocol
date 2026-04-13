@@ -22,10 +22,10 @@ void LegacyTelemetryEventPacket::write(BinaryStream& stream) const {
     stream.writeVariantIndex<std::uint32_t>(mEventData, &BinaryStream::writeUnsignedVarInt);
     std::visit(
         Overload{
-            [&](const Achievement& data) { stream.writeVarInt(data.mAchievementId); },
+            [&](const Achievement& data) { stream.writeVarInt(static_cast<std::int32_t>(data.mAchievementId)); },
             [&](const Interaction& data) {
                 stream.writeVarInt64(data.mInteractedEntityId);
-                stream.writeVarInt(data.mInteractionType);
+                stream.writeVarInt(static_cast<std::int32_t>(data.mInteractionType));
                 stream.writeVarInt(data.mInteractionActorType);
                 stream.writeVarInt(data.mInteractionActorVariant);
                 stream.writeByte(data.mInteractionActorColor);
@@ -38,7 +38,7 @@ void LegacyTelemetryEventPacket::write(BinaryStream& stream) const {
             [&](const MobKilled& data) {
                 stream.writeVarInt64(data.mKillerActorId);
                 stream.writeVarInt64(data.mKilledActorId);
-                stream.writeVarInt(data.mKillerChildActorType);
+                stream.writeVarInt(static_cast<std::int32_t>(data.mKillerChildActorType));
                 stream.writeVarInt(data.mDamageSource);
                 stream.writeVarInt(data.mTradeTier);
                 stream.writeString(data.mTraderName);
@@ -66,16 +66,16 @@ void LegacyTelemetryEventPacket::write(BinaryStream& stream) const {
                 stream.writeString(data.mErrorList);
             },
             [&](const MobBorn& data) {
-                stream.writeVarInt(data.mMobType);
+                stream.writeEnum(data.mMobType, &BinaryStream::writeVarInt);
                 stream.writeVarInt(data.mMobVariant);
                 stream.writeByte(data.mColor);
             },
             [&](const POICauldronUsed& data) {
-                stream.writeVarInt(data.mInteractionType);
+                stream.writeVarInt(static_cast<std::int32_t>(data.mInteractionType));
                 stream.writeVarInt(data.mItemId);
             },
             [&](const ComposterUsed& data) {
-                stream.writeVarInt(data.mInteractionType);
+                stream.writeVarInt(static_cast<std::int32_t>(data.mInteractionType));
                 stream.writeVarInt(data.mItemId);
             },
             [&](const BellUsed& data) { stream.writeVarInt(data.mItemId); },
@@ -117,12 +117,17 @@ Result<> LegacyTelemetryEventPacket::read(ReadOnlyBinaryStream& stream) {
         return status;
     return std::visit(
         Overload{
-            [&](Achievement& data) { return stream.readVarInt(data.mAchievementId); },
+            [&](Achievement& data) {
+                std::int32_t achievementId{};
+                if (auto status = stream.readVarInt(achievementId); !status) return status;
+                data.mAchievementId = static_cast<AchievementIds>(achievementId);
+                return Result<>{};
+            },
             [&](Interaction& data) {
                 if (auto status = stream.readVarInt64(data.mInteractedEntityId); !status) return status;
                 int interactionType{};
                 if (auto status = stream.readVarInt(interactionType); !status) return status;
-                data.mInteractionType = interactionType;
+                data.mInteractionType = static_cast<InteractionType>(interactionType);
                 if (auto status = stream.readVarInt(data.mInteractionActorType); !status) return status;
                 if (auto status = stream.readVarInt(data.mInteractionActorVariant); !status) return status;
                 if (auto status = stream.readByte(data.mInteractionActorColor); !status) return status;
@@ -137,7 +142,9 @@ Result<> LegacyTelemetryEventPacket::read(ReadOnlyBinaryStream& stream) {
             [&](MobKilled& data) {
                 if (auto status = stream.readVarInt64(data.mKillerActorId); !status) return status;
                 if (auto status = stream.readVarInt64(data.mKilledActorId); !status) return status;
-                if (auto status = stream.readVarInt(data.mKillerChildActorType); !status) return status;
+                if (auto status = stream.readEnum(data.mKillerChildActorType, &ReadOnlyBinaryStream::readVarInt);
+                    !status)
+                    return status;
                 if (auto status = stream.readVarInt(data.mDamageSource); !status) return status;
                 if (auto status = stream.readVarInt(data.mTradeTier); !status) return status;
                 if (auto status = stream.readString(data.mTraderName); !status) return status;
@@ -170,18 +177,23 @@ Result<> LegacyTelemetryEventPacket::read(ReadOnlyBinaryStream& stream) {
                 return Result<>{};
             },
             [&](MobBorn& data) {
-                if (auto status = stream.readVarInt(data.mMobType); !status) return status;
+                if (auto status = stream.readEnum(data.mMobType, &ReadOnlyBinaryStream::readVarInt); !status)
+                    return status;
                 if (auto status = stream.readVarInt(data.mMobVariant); !status) return status;
                 if (auto status = stream.readByte(data.mColor); !status) return status;
                 return Result<>{};
             },
             [&](POICauldronUsed& data) {
-                if (auto status = stream.readVarInt(data.mInteractionType); !status) return status;
+                int interactionType{};
+                if (auto status = stream.readVarInt(interactionType); !status) return status;
+                data.mInteractionType = static_cast<POIBlockInteractionType>(interactionType);
                 if (auto status = stream.readVarInt(data.mItemId); !status) return status;
                 return Result<>{};
             },
             [&](ComposterUsed& data) {
-                if (auto status = stream.readVarInt(data.mInteractionType); !status) return status;
+                int interactionType{};
+                if (auto status = stream.readVarInt(interactionType); !status) return status;
+                data.mInteractionType = static_cast<POIBlockInteractionType>(interactionType);
                 if (auto status = stream.readVarInt(data.mItemId); !status) return status;
                 return Result<>{};
             },

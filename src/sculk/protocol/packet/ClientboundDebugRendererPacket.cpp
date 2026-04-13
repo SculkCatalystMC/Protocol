@@ -21,10 +21,7 @@ void ClientboundDebugRendererPacket::write(BinaryStream& stream) const {
     if (mType == Type::AddDebugMarkerCube) {
         stream.writeString(mText);
         mPosition.write(stream);
-        stream.writeFloat(mColorRed);
-        stream.writeFloat(mColorGreen);
-        stream.writeFloat(mColorBlue);
-        stream.writeFloat(mColorAlpha);
+        stream.writeSignedInt(mColor);
         stream.writeUnsignedInt64(mDurationMilliseconds);
     }
 }
@@ -34,10 +31,7 @@ Result<> ClientboundDebugRendererPacket::read(ReadOnlyBinaryStream& stream) {
     if (mType == Type::AddDebugMarkerCube) {
         if (auto status = stream.readString(mText); !status) return status;
         if (auto status = mPosition.read(stream); !status) return status;
-        if (auto status = stream.readFloat(mColorRed); !status) return status;
-        if (auto status = stream.readFloat(mColorGreen); !status) return status;
-        if (auto status = stream.readFloat(mColorBlue); !status) return status;
-        if (auto status = stream.readFloat(mColorAlpha); !status) return status;
+        if (auto status = stream.readSignedInt(mColor); !status) return status;
         return stream.readUnsignedInt64(mDurationMilliseconds);
     }
     return {};

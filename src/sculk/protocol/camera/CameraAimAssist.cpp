@@ -124,14 +124,23 @@ Result<> CameraAimAssistPresetDefinition::read(ReadOnlyBinaryStream& stream) {
 
 void CameraPresetAimAssistDefinition::write(BinaryStream& stream) const {
     stream.writeOptional(mPresetId, &BinaryStream::writeString);
-    stream.writeOptional(mTargetMode, &BinaryStream::writeSignedInt);
+    stream.writeOptional(mTargetMode, [](BinaryStream& stream, TargetMode value) {
+        stream.writeEnum(value, &BinaryStream::writeByte);
+    });
     stream.writeOptional(mViewAngle, &Vec2::write);
     stream.writeOptional(mDistance, &BinaryStream::writeFloat);
 }
 
 Result<> CameraPresetAimAssistDefinition::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readOptional(mPresetId, &ReadOnlyBinaryStream::readString); !status) return status;
-    if (auto status = stream.readOptional(mTargetMode, &ReadOnlyBinaryStream::readSignedInt); !status) return status;
+    if (auto status = stream.readOptional(
+            mTargetMode,
+            [](ReadOnlyBinaryStream& stream, TargetMode& value) {
+                return stream.readEnum(value, &ReadOnlyBinaryStream::readByte);
+            }
+        );
+        !status)
+        return status;
     if (auto status = stream.readOptional(mViewAngle, &Vec2::read); !status) return status;
     return stream.readOptional(mDistance, &ReadOnlyBinaryStream::readFloat);
 }

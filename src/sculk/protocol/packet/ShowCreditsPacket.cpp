@@ -15,12 +15,12 @@ std::string_view ShowCreditsPacket::getName() const noexcept { return "ShowCredi
 
 void ShowCreditsPacket::write(BinaryStream& stream) const {
     stream.writeUnsignedVarInt64(mPlayerRuntimeId);
-    stream.writeVarInt(mCreditsState);
+    stream.writeEnum(mCreditsState, &BinaryStream::writeVarInt);
 }
 
 Result<> ShowCreditsPacket::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedVarInt64(mPlayerRuntimeId); !status) return status;
-    return stream.readVarInt(mCreditsState);
+    return stream.readEnum(mCreditsState, &ReadOnlyBinaryStream::readVarInt);
 }
 
 } // namespace sculk::protocol::inline abi_v944

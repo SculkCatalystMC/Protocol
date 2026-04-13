@@ -12,7 +12,15 @@ namespace sculk::protocol::inline abi_v944 {
 
 class SimpleEventPacket : public IPacket {
 public:
-    std::uint16_t mType{};
+    enum class Subtype : std::uint16_t {
+        UninitializedSubtype        = 0,
+        EnableCommands              = 1,
+        DisableCommands             = 2,
+        UnlockWorldTemplateSettings = 3
+    };
+
+public:
+    Subtype mType{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

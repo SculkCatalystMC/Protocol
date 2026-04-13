@@ -10,12 +10,12 @@
 namespace sculk::protocol::inline abi_v944 {
 
 void ServerboundDiagnosticsPacket::MemoryCategoryCounter::write(BinaryStream& stream) const {
-    stream.writeByte(mType);
+    stream.writeEnum(mType, &BinaryStream::writeByte);
     stream.writeUnsignedInt64(mCurrentBytes);
 }
 
 Result<> ServerboundDiagnosticsPacket::MemoryCategoryCounter::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readByte(mType); !status) return status;
+    if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readByte); !status) return status;
     return stream.readUnsignedInt64(mCurrentBytes);
 }
 

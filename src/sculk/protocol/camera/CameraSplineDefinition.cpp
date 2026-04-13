@@ -6,31 +6,32 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #include "sculk/protocol/camera/CameraSplineDefinition.hpp"
+#include "../utility/EnumName.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 void CameraSplineProgressKeyFrame::write(BinaryStream& stream) const {
     stream.writeFloat(mProgress);
     stream.writeFloat(mTime);
-    stream.writeString(mEasing);
+    utils::writeEnumName(stream, mEasing);
 }
 
 Result<> CameraSplineProgressKeyFrame::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readFloat(mProgress); !status) return status;
     if (auto status = stream.readFloat(mTime); !status) return status;
-    return stream.readString(mEasing);
+    return utils::readEnumName(stream, mEasing);
 }
 
 void CameraSplineRotationKeyFrame::write(BinaryStream& stream) const {
     mRotation.write(stream);
     stream.writeFloat(mTime);
-    stream.writeString(mEasing);
+    utils::writeEnumName(stream, mEasing);
 }
 
 Result<> CameraSplineRotationKeyFrame::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mRotation.read(stream); !status) return status;
     if (auto status = stream.readFloat(mTime); !status) return status;
-    return stream.readString(mEasing);
+    return utils::readEnumName(stream, mEasing);
 }
 
 void CameraSplineDefinition::write(BinaryStream& stream) const {

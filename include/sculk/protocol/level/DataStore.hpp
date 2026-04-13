@@ -19,6 +19,7 @@ struct DataStoreUpdate {
     std::string                             mPath{};
     std::variant<double, bool, std::string> mData{};
     std::uint32_t                           mPropertyUpdateCount{};
+    std::uint32_t                           mPathUpdateCount{};
 
     void write(BinaryStream& stream) const;
 
@@ -28,8 +29,8 @@ struct DataStoreUpdate {
 struct DataStoreChange {
     std::string                             mName{};
     std::string                             mProperty{};
-    std::variant<double, bool, std::string> mData{};
     std::uint32_t                           mUpdateCount{};
+    std::variant<double, bool, std::string> mData{};
 
     void write(BinaryStream& stream) const;
 

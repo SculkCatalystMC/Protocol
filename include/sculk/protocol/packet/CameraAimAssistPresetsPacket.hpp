@@ -13,10 +13,16 @@ namespace sculk::protocol::inline abi_v944 {
 
 class CameraAimAssistPresetsPacket : public IPacket {
 public:
+    enum class Operation : std::uint8_t {
+        Set           = 0,
+        AddToExisting = 1,
+    };
+
+public:
     std::vector<CameraAimAssistCategoriesDefinition> mCatagories{};
     std::vector<CameraAimAssistPresetDefinition>     mPreset{};
     std::vector<CameraAimAssistCategoryDefinition>   mCatagory{};
-    std::uint8_t                                     mOperation{};
+    Operation                                        mOperation{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

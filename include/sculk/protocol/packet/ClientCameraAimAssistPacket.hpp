@@ -12,9 +12,15 @@ namespace sculk::protocol::inline abi_v944 {
 
 class ClientCameraAimAssistPacket : public IPacket {
 public:
-    std::string  mPresetId{};
-    std::uint8_t mAction{};
-    bool         mAllowAimAssist{};
+    enum class Action : std::uint8_t {
+        SetFromCameraPreset = 0,
+        Clear               = 1,
+    };
+
+public:
+    std::string mPresetId{};
+    Action      mAction{};
+    bool        mAllowAimAssist{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

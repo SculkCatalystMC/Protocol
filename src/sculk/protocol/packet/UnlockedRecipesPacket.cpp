@@ -14,12 +14,12 @@ MinecraftPacketIds UnlockedRecipesPacket::getId() const noexcept { return Minecr
 std::string_view UnlockedRecipesPacket::getName() const noexcept { return "UnlockedRecipesPacket"; }
 
 void UnlockedRecipesPacket::write(BinaryStream& stream) const {
-    stream.writeUnsignedInt(mPacketType);
+    stream.writeEnum(mPacketType, &BinaryStream::writeUnsignedInt);
     stream.writeArray(mUnlockedRecipesList, &BinaryStream::writeString);
 }
 
 Result<> UnlockedRecipesPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readUnsignedInt(mPacketType); !status) return status;
+    if (auto status = stream.readEnum(mPacketType, &ReadOnlyBinaryStream::readUnsignedInt); !status) return status;
     return stream.readArray(mUnlockedRecipesList, &ReadOnlyBinaryStream::readString);
 }
 

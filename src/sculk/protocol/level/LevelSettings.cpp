@@ -13,9 +13,9 @@ void LevelSettings::write(BinaryStream& stream) const {
     stream.writeUnsignedInt64(mSeed);
     mSpawnSettings.write(stream);
     stream.writeVarInt(mGeneratorType);
-    stream.writeVarInt(mGameType);
+    stream.writeEnum(mGameType, &BinaryStream::writeVarInt);
     stream.writeBool(mIsHardCore);
-    stream.writeVarInt(mDifficulty);
+    stream.writeEnum(mDifficulty, &BinaryStream::writeVarInt);
     mSpawnPosition.write(stream);
     stream.writeBool(mAchievementDisabled);
     stream.writeVarInt(mEditorWorldType);
@@ -38,7 +38,7 @@ void LevelSettings::write(BinaryStream& stream) const {
     mExperiments.write(stream);
     stream.writeBool(mBonusChest);
     stream.writeBool(mStartsWithMap);
-    stream.writeVarInt(mPlayerPermission);
+    stream.writeEnum(mPlayerPermission, &BinaryStream::writeVarInt);
     stream.writeSignedInt(mTickRange);
     stream.writeBool(mLockBehaviorPack);
     stream.writeBool(mLockResourcePack);
@@ -65,9 +65,9 @@ Result<> LevelSettings::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readUnsignedInt64(mSeed); !status) return status;
     if (auto status = mSpawnSettings.read(stream); !status) return status;
     if (auto status = stream.readVarInt(mGeneratorType); !status) return status;
-    if (auto status = stream.readVarInt(mGameType); !status) return status;
+    if (auto status = stream.readEnum(mGameType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readBool(mIsHardCore); !status) return status;
-    if (auto status = stream.readVarInt(mDifficulty); !status) return status;
+    if (auto status = stream.readEnum(mDifficulty, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = mSpawnPosition.read(stream); !status) return status;
     if (auto status = stream.readBool(mAchievementDisabled); !status) return status;
     if (auto status = stream.readVarInt(mEditorWorldType); !status) return status;
@@ -90,7 +90,7 @@ Result<> LevelSettings::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mExperiments.read(stream); !status) return status;
     if (auto status = stream.readBool(mBonusChest); !status) return status;
     if (auto status = stream.readBool(mStartsWithMap); !status) return status;
-    if (auto status = stream.readVarInt(mPlayerPermission); !status) return status;
+    if (auto status = stream.readEnum(mPlayerPermission, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     if (auto status = stream.readSignedInt(mTickRange); !status) return status;
     if (auto status = stream.readBool(mLockBehaviorPack); !status) return status;
     if (auto status = stream.readBool(mLockResourcePack); !status) return status;

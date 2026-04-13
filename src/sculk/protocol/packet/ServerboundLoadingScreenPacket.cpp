@@ -16,12 +16,12 @@ MinecraftPacketIds ServerboundLoadingScreenPacket::getId() const noexcept {
 std::string_view ServerboundLoadingScreenPacket::getName() const noexcept { return "ServerboundLoadingScreenPacket"; }
 
 void ServerboundLoadingScreenPacket::write(BinaryStream& stream) const {
-    stream.writeVarInt(mType);
+    stream.writeEnum(mType, &BinaryStream::writeVarInt);
     stream.writeOptional(mLoadingScreenId, &BinaryStream::writeUnsignedInt);
 }
 
 Result<> ServerboundLoadingScreenPacket::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readVarInt(mType); !status) return status;
+    if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readVarInt); !status) return status;
     return stream.readOptional(mLoadingScreenId, &ReadOnlyBinaryStream::readUnsignedInt);
 }
 

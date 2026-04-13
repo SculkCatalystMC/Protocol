@@ -6,13 +6,14 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/actor/player/GameType.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 class UpdatePlayerGameTypePacket : public IPacket {
 public:
-    std::int32_t  mGameType{};
+    GameType      mGameType{};
     std::int64_t  mPlayerUniqueId{};
     std::uint64_t mTick{};
 

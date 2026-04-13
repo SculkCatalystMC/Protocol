@@ -6,15 +6,16 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
+#include "sculk/protocol/actor/ActorDamageCause.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
 class HurtArmorPacket : public IPacket {
 public:
-    std::int32_t  mCause{};
-    std::int32_t  mDamage{};
-    std::uint64_t mArmorSlots{};
+    ActorDamageCause mCause{};
+    std::int32_t     mDamage{};
+    std::uint64_t    mArmorSlots{};
 
 public:
     [[nodiscard]] MinecraftPacketIds getId() const noexcept override;

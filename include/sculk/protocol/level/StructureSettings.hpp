@@ -11,7 +11,32 @@
 
 namespace sculk::protocol::inline abi_v944 {
 
-struct StructureSettings {
+class StructureSettings {
+public:
+    enum class Rotation : std::uint8_t {
+        None               = 0,
+        Rotate90           = 1,
+        Rotate180          = 2,
+        Rotate270          = 3,
+        Clockwise90        = 1,
+        Clockwise180       = 2,
+        CounterClockwise90 = 3,
+    };
+
+    enum class Mirror : std::uint8_t {
+        None = 0,
+        X    = 1,
+        Z    = 2,
+        Xz   = 3,
+    };
+
+    enum class AnimationMode : std::uint8_t {
+        None   = 0,
+        Layers = 1,
+        Blocks = 2,
+    };
+
+public:
     std::string   mPaletteName{};
     bool          mShouldIgnoreEntities{false};
     bool          mShouldIgnoreBlocks{false};
@@ -19,9 +44,9 @@ struct StructureSettings {
     BlockPos      mSize{};
     BlockPos      mOffset{};
     std::int64_t  mLastEditPlayer{};
-    std::uint8_t  mRotation{};
-    std::uint8_t  mMirror{};
-    std::uint8_t  mAnimationMode{};
+    Rotation      mRotation{};
+    Mirror        mMirror{};
+    AnimationMode mAnimationMode{};
     float         mAnimationSeconds{};
     float         mIntegretyValue{};
     std::uint32_t mSeed{};

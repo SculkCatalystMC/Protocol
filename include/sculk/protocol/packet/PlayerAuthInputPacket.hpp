@@ -6,10 +6,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #pragma once
-#include "sculk/protocol/inventory/transaction/PackedItemUseLegacyInventoryTransaction.hpp"
 #include "sculk/protocol/actor/player/PlayerAuthInputData.hpp"
 #include "sculk/protocol/actor/player/PlayerBlockActions.hpp"
 #include "sculk/protocol/inventory/item/ItemStackRequest.hpp"
+#include "sculk/protocol/inventory/transaction/PackedItemUseLegacyInventoryTransaction.hpp"
 #include "sculk/protocol/packet/IPacket.hpp"
 #include "sculk/protocol/utility/math/Vec2.hpp"
 #include "sculk/protocol/utility/math/Vec3.hpp"

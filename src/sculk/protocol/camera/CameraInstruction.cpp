@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #include "sculk/protocol/camera/CameraInstruction.hpp"
+#include "../utility/EnumName.hpp"
 
 namespace sculk::protocol::inline abi_v944 {
 
@@ -44,12 +45,12 @@ Result<> CameraInstruction::FadeInstruction::read(ReadOnlyBinaryStream& stream) 
 }
 
 void CameraInstruction::SetInstruction::EaseOption::write(BinaryStream& stream) const {
-    stream.writeByte(mEasingType);
+    stream.writeEnum(mEasingType, &BinaryStream::writeByte);
     stream.writeFloat(mEasingTime);
 }
 
 Result<> CameraInstruction::SetInstruction::EaseOption::read(ReadOnlyBinaryStream& stream) {
-    if (auto status = stream.readByte(mEasingType); !status) return status;
+    if (auto status = stream.readEnum(mEasingType, &ReadOnlyBinaryStream::readByte); !status) return status;
     return stream.readFloat(mEasingTime);
 }
 
@@ -90,39 +91,39 @@ Result<> CameraInstruction::TargetInstruction::read(ReadOnlyBinaryStream& stream
 void CameraInstruction::FovInstruction::write(BinaryStream& stream) const {
     stream.writeFloat(mFieldOfView);
     stream.writeFloat(mEaseTime);
-    stream.writeByte(mEaseType);
+    utils::writeEnumName(stream, mEaseType);
     stream.writeBool(mClear);
 }
 
 Result<> CameraInstruction::FovInstruction::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readFloat(mFieldOfView); !status) return status;
     if (auto status = stream.readFloat(mEaseTime); !status) return status;
-    if (auto status = stream.readByte(mEaseType); !status) return status;
+    if (auto status = utils::readEnumName(stream, mEaseType); !status) return status;
     return stream.readBool(mClear);
 }
 
 void CameraInstruction::SplineInstruction::SplineProgressOption::write(BinaryStream& stream) const {
     stream.writeFloat(mKeyFrameValue);
     stream.writeFloat(mKeyFrameTime);
-    stream.writeString(mKeyFrameEasingFunc);
+    utils::writeEnumName(stream, mKeyFrameEasingFunc);
 }
 
 Result<> CameraInstruction::SplineInstruction::SplineProgressOption::read(ReadOnlyBinaryStream& stream) {
     if (auto status = stream.readFloat(mKeyFrameValue); !status) return status;
     if (auto status = stream.readFloat(mKeyFrameTime); !status) return status;
-    return stream.readString(mKeyFrameEasingFunc);
+    return utils::readEnumName(stream, mKeyFrameEasingFunc);
 }
 
 void CameraInstruction::SplineInstruction::RotationOption::write(BinaryStream& stream) const {
     mKeyFrameValues.write(stream);
     stream.writeFloat(mKeyFrameTimes);
-    stream.writeString(mKeyFrameEasingFunc);
+    utils::writeEnumName(stream, mKeyFrameEasingFunc);
 }
 
 Result<> CameraInstruction::SplineInstruction::RotationOption::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mKeyFrameValues.read(stream); !status) return status;
     if (auto status = stream.readFloat(mKeyFrameTimes); !status) return status;
-    return stream.readString(mKeyFrameEasingFunc);
+    return utils::readEnumName(stream, mKeyFrameEasingFunc);
 }
 
 void CameraInstruction::SplineInstruction::write(BinaryStream& stream) const {
@@ -131,6 +132,8 @@ void CameraInstruction::SplineInstruction::write(BinaryStream& stream) const {
     stream.writeArray(mCurve, &Vec3::write);
     stream.writeArray(mProgressKeyFrames, &SplineProgressOption::write);
     stream.writeArray(mRotationOptions, &RotationOption::write);
+    stream.writeOptional(mSplineIdentifier, &BinaryStream::writeString);
+    stream.writeOptional(mLoadFromJson, &BinaryStream::writeBool);
 }
 
 Result<> CameraInstruction::SplineInstruction::read(ReadOnlyBinaryStream& stream) {
@@ -138,7 +141,9 @@ Result<> CameraInstruction::SplineInstruction::read(ReadOnlyBinaryStream& stream
     if (auto status = stream.readEnum(mType, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (auto status = stream.readArray(mCurve, &Vec3::read); !status) return status;
     if (auto status = stream.readArray(mProgressKeyFrames, &SplineProgressOption::read); !status) return status;
-    return stream.readArray(mRotationOptions, &RotationOption::read);
+    if (auto status = stream.readArray(mRotationOptions, &RotationOption::read); !status) return status;
+    if (auto status = stream.readOptional(mSplineIdentifier, &ReadOnlyBinaryStream::readString); !status) return status;
+    return stream.readOptional(mLoadFromJson, &ReadOnlyBinaryStream::readBool);
 }
 
 void CameraInstruction::AttachToEntityInstruction::write(BinaryStream& stream) const {
