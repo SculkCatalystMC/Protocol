@@ -1,15 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
-# Auto-enable vcpkg toolchain when available and not already specified.
-if(WIN32 AND (NOT DEFINED CMAKE_TOOLCHAIN_FILE OR CMAKE_TOOLCHAIN_FILE STREQUAL ""))
-    if(DEFINED ENV{VCPKG_ROOT} AND EXISTS "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
-        set(CMAKE_TOOLCHAIN_FILE
-            "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-            CACHE STRING "Path to vcpkg toolchain file"
-            FORCE
-        )
-        message(STATUS "Using vcpkg toolchain: ${CMAKE_TOOLCHAIN_FILE}")
-    endif()
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE AND DEFINED ENV{VCPKG_ROOT})
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "" FORCE)
 endif()
 
 project(Protocol VERSION 0.1.0 LANGUAGES CXX)
@@ -18,32 +10,11 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(FetchContent)
 
-# Prefer package config files (vcpkg-provided) over Find*.cmake modules.
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 
-# Fallback for existing build directories that were configured without toolchain.
-if(WIN32 AND DEFINED ENV{VCPKG_ROOT} AND (NOT DEFINED OPENSSL_ROOT_DIR OR OPENSSL_ROOT_DIR STREQUAL ""))
-    if(DEFINED VCPKG_TARGET_TRIPLET AND NOT VCPKG_TARGET_TRIPLET STREQUAL "")
-        set(_protocol_vcpkg_triplet "${VCPKG_TARGET_TRIPLET}")
-    elseif(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT "$ENV{VCPKG_DEFAULT_TRIPLET}" STREQUAL "")
-        set(_protocol_vcpkg_triplet "$ENV{VCPKG_DEFAULT_TRIPLET}")
-    else()
-        set(_protocol_vcpkg_triplet "x64-windows")
-    endif()
+find_package(OpenSSL 3 REQUIRED)
 
-    set(_protocol_openssl_root "$ENV{VCPKG_ROOT}/installed/${_protocol_vcpkg_triplet}")
-    if(EXISTS "${_protocol_openssl_root}/include/openssl/ssl.h")
-        set(OPENSSL_ROOT_DIR "${_protocol_openssl_root}" CACHE PATH "OpenSSL root directory" FORCE)
-        message(STATUS "Using vcpkg OpenSSL from: ${OPENSSL_ROOT_DIR}")
-    endif()
-
-    unset(_protocol_openssl_root)
-    unset(_protocol_vcpkg_triplet)
-endif()
-
-find_package(OpenSSL REQUIRED)
-
-set(REFLECTION_BUILD_TESTS OFF CACHE BOOL "Disable building tests for Reflection")
+set(REFLECTION_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
     reflection
     GIT_REPOSITORY https://github.com/SculkCatalystMC/Reflection.git
