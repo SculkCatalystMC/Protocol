@@ -15,13 +15,12 @@ namespace sculk::protocol::inline abi_v944 {
 namespace detail {
 
 template <typename Var, std::size_t... Is>
-Result<>
-emplace_variant_impl(Var& v, std::size_t idx, std::source_location location, std::index_sequence<Is...>) noexcept {
+Result<> emplace_variant_impl(Var& v, std::size_t idx _SCULK_SL_PARAMETER_DEF, std::index_sequence<Is...>) noexcept {
     using emplace_func             = void (*)(Var&);
     constexpr emplace_func table[] = {+[](Var& var) { var.template emplace<Is>(); }...};
 
     if (idx >= sizeof...(Is)) {
-        return error_utils::makeError("emplace_variant_impl: index out of range", location);
+        return error_utils::makeError("emplace_variant_impl: index out of range" _SCULK_SL_PARAM_PASS);
     }
 
     table[idx](v);
@@ -39,9 +38,9 @@ template <typename... Ts>
 Overload(Ts...) -> Overload<Ts...>;
 
 template <typename Var>
-Result<> emplace_variant(Var& v, std::size_t idx, std::source_location location) noexcept {
+Result<> emplace_variant(Var& v, std::size_t idx _SCULK_SL_PARAMETER_DEF) noexcept {
     constexpr std::size_t N = std::variant_size_v<std::remove_reference_t<Var>>;
-    return detail::emplace_variant_impl(v, idx, location, std::make_index_sequence<N>{});
+    return detail::emplace_variant_impl(v, idx _SCULK_SL_PARAM_PASS, std::make_index_sequence<N>{});
 }
 
 } // namespace sculk::protocol::inline abi_v944

@@ -7,19 +7,39 @@
 
 #pragma once
 #include <expected>
-#include <format>
-#include <source_location>
 #include <string_view>
+
+#ifdef SCULK_PROTOCOL_DEBUG
+#include <source_location>
+#endif
 
 namespace sculk::protocol::inline abi_v944 {
 
-struct ErrorInfo {
-    std::string_view     mMessage{};
-    std::source_location mLocation{};
+#ifdef SCULK_PROTOCOL_DEBUG
+#define _SCULK_SL_PARAM_DEFAULT , std::source_location location = std::source_location::current()
+#define _SCULK_SL_PARAMETER_DEF , std::source_location location
+#define _SCULK_SL_PARAM_PASS    , location
+#define _SCULK_SL_PARAMETER     , std::source_location
+#else
+#define _SCULK_SL_PARAM_DEFAULT
+#define _SCULK_SL_PARAMETER_DEF
+#define _SCULK_SL_PARAM_PASS
+#define _SCULK_SL_PARAMETER
+#endif
 
+struct ErrorInfo {
+    std::string_view mMessage{};
+#ifdef SCULK_PROTOCOL_DEBUG
+    std::source_location mLocation{};
+#endif
+
+#ifdef SCULK_PROTOCOL_DEBUG
     [[nodiscard]] constexpr ErrorInfo(std::string_view message, std::source_location location) noexcept
     : mMessage(message),
       mLocation(location) {}
+#else
+    [[nodiscard]] constexpr explicit ErrorInfo(std::string_view message) noexcept : mMessage(message) {}
+#endif
 };
 
 template <typename T = void>
@@ -27,9 +47,8 @@ using Result = std::expected<T, ErrorInfo>;
 
 namespace error_utils {
 
-[[nodiscard]] constexpr std::unexpected<ErrorInfo>
-makeError(std::string_view error, std::source_location location = std::source_location::current()) noexcept {
-    return std::unexpected(ErrorInfo(error, location));
+[[nodiscard]] constexpr std::unexpected<ErrorInfo> makeError(std::string_view error _SCULK_SL_PARAM_DEFAULT) noexcept {
+    return std::unexpected(ErrorInfo(error _SCULK_SL_PARAM_PASS));
 }
 
 } // namespace error_utils

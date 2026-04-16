@@ -38,6 +38,9 @@ set_target_properties(Protocol PROPERTIES
 )
 
 target_compile_features(Protocol PUBLIC cxx_std_23)
+target_compile_definitions(Protocol PRIVATE
+    $<$<CONFIG:Debug>:SCULK_PROTOCOL_DEBUG>
+)
 target_link_libraries(Protocol PRIVATE reflection::reflection OpenSSL::Crypto)
 
 target_include_directories(Protocol PUBLIC

@@ -32,24 +32,19 @@ inline jsonc::json serialize_to_json(const T& value) {
 }
 
 template <typename T>
-inline Result<>
-deserialize_json(T& value, std::string_view json, std::source_location location = std::source_location::current()) {
+inline Result<> deserialize_json(T& value, std::string_view json _SCULK_SL_PARAM_DEFAULT) {
     auto jsonObj = jsonc::jsonc::parse(json);
-    if (!jsonObj) return error_utils::makeError("Failed to parse JSON: {}", location);
+    if (!jsonObj) return error_utils::makeError("Failed to parse JSON: {}" _SCULK_SL_PARAM_PASS);
     if (!reflection::jsonc::deserialize<false, false>(value, *jsonObj, json_key_formatter, json_options)) {
-        return error_utils::makeError("Failed to deserialize JSON: {}", location);
+        return error_utils::makeError("Failed to deserialize JSON: {}" _SCULK_SL_PARAM_PASS);
     }
     return {};
 }
 
 template <typename T>
-inline Result<> deserialize_from_json(
-    T&                   value,
-    const jsonc::json&   json,
-    std::source_location location = std::source_location::current()
-) {
+inline Result<> deserialize_from_json(T& value, const jsonc::json& json _SCULK_SL_PARAM_DEFAULT) {
     if (!reflection::jsonc::deserialize<false, false>(value, json, json_key_formatter, json_options)) {
-        return error_utils::makeError("Failed to deserialize JSON: {}", location);
+        return error_utils::makeError("Failed to deserialize JSON: {}" _SCULK_SL_PARAM_PASS);
     }
     return {};
 }

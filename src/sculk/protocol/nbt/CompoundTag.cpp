@@ -48,7 +48,7 @@ void CompoundTag::write(BinaryStream& stream) const {
     TagType rootType{};
     if (auto status = stream.readEnum(rootType, &ReadOnlyBinaryStream::readByte); !status) return status;
     if (rootType != TagType::Compound) {
-        return error_utils::makeError("CompoundTag::read invalid root tag type", std::source_location::current());
+        return error_utils::makeError("CompoundTag::read invalid root tag type");
     }
     if (auto status = stream.ignoreBytes(1); !status) return status; // Ignore root name (empty string)
     return deserialize(stream);

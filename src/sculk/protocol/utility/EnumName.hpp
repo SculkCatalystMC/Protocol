@@ -32,14 +32,11 @@ constexpr Enum str_to_enum(std::string_view value) {
 
 template <typename T>
     requires std::is_enum_v<T>
-[[nodiscard]] constexpr Result<> readEnumName(
-    ReadOnlyBinaryStream& stream,
-    T&                    outValue,
-    std::source_location  location = std::source_location::current()
-) noexcept {
+[[nodiscard]] constexpr Result<>
+readEnumName(ReadOnlyBinaryStream& stream, T& outValue _SCULK_SL_PARAM_DEFAULT) noexcept {
     std::string enumName{};
-    if (!stream.readString(enumName, location)) {
-        return error_utils::makeError("ReadOnlyBinaryStream::readEnumName overflowed", location);
+    if (!stream.readString(enumName _SCULK_SL_PARAM_PASS)) {
+        return error_utils::makeError("ReadOnlyBinaryStream::readEnumName overflowed" _SCULK_SL_PARAM_PASS);
     }
     outValue = utils::str_to_enum<T>(enumName);
     return {};
