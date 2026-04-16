@@ -26,16 +26,10 @@ Result<> PackInfoData::read(ReadOnlyBinaryStream& stream) {
     if (auto status = mPackId.read(stream); !status) return status;
     if (auto status = stream.readString(mPackVersion); !status) return status;
     if (auto status = stream.readUnsignedInt64(mPackSize); !status) return status;
-
-    std::uint32_t contentKeySize = {};
-    if (auto status = stream.readUnsignedVarInt(contentKeySize); !status) return status;
-
-    if (contentKeySize != 0) {
-        // Vanilla client only reads the first 32 bytes of the mContentKey. The rest - ignores
-        if (auto status = stream.readRawBytes(mContentKey, 32); !status) return status;
-        if (auto status = stream.ignoreBytes(static_cast<std::size_t>(contentKeySize) - 32); !status) return status;
+    if (auto status = stream.readString(mContentKey); !status) return status;
+    if (mContentKey.size() != 32) {
+        return error_utils::makeError("invalid content key length");
     }
-    
     if (auto status = stream.readString(mSubpackName); !status) return status;
     if (auto status = stream.readString(mContentIdentity); !status) return status;
     if (auto status = stream.readBool(mHasScripts); !status) return status;
