@@ -23,7 +23,7 @@ void IPacket::writeHeader(BinaryStream& stream) const {
     );
 }
 
-Result<> IPacket::readNoHeader(ReadOnlyBinaryStream& stream) {
+Result<> IPacket::readWithHeader(ReadOnlyBinaryStream& stream) {
     if (auto status = readHeader(stream); !status) {
         return status;
     }

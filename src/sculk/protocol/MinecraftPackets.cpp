@@ -276,6 +276,15 @@ std::unique_ptr<IPacket> MinecraftPackets::createPacket(const PacketHeader& head
     return packet;
 }
 
+std::unique_ptr<IPacket> MinecraftPackets::readAndCreatePacketFromStream(ReadOnlyBinaryStream& stream) {
+    auto header = readPacketHeader(stream);
+    auto packet = createPacket(header);
+    if (!packet || !packet->read(stream)) {
+        return nullptr;
+    }
+    return packet;
+}
+
 std::unique_ptr<IPacket> MinecraftPackets::createPacket(MinecraftPacketIds packetId) {
     CREATE_PACKET_SWITCH(packetId)
     CREATE_PACKET(Login)                                  // 1

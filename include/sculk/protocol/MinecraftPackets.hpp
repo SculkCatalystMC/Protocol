@@ -27,6 +27,8 @@ public:
 
     [[nodiscard]] static std::unique_ptr<IPacket> createPacket(const PacketHeader& header);
 
+    [[nodiscard]] static std::unique_ptr<IPacket> readAndCreatePacketFromStream(ReadOnlyBinaryStream& stream);
+
     [[nodiscard]] static PacketHeader readPacketHeader(ReadOnlyBinaryStream& stream);
 
     static void writePacketHeader(BinaryStream& stream, const PacketHeader& header);

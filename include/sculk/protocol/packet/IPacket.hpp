@@ -37,7 +37,7 @@ public:
 
     void writeWithHeader(BinaryStream& stream) const;
 
-    [[nodiscard]] Result<> readNoHeader(ReadOnlyBinaryStream& stream);
+    [[nodiscard]] Result<> readWithHeader(ReadOnlyBinaryStream& stream);
 };
 
 } // namespace sculk::protocol::inline abi_v944
